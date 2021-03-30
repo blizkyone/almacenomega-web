@@ -7,6 +7,9 @@ import {
    USER_LOGIN_REQUEST,
    USER_LOGIN_SUCCESS,
    USER_LOGOUT,
+   USER_LOGOUT_FAIL,
+   USER_LOGOUT_REQUEST,
+   USER_LOGOUT_SUCCESS,
    USER_REGISTER_FAIL,
    USER_REGISTER_REQUEST,
    USER_REGISTER_SUCCESS,
@@ -24,6 +27,9 @@ import {
    USER_UPDATE_FAIL,
    USER_UPDATE_SUCCESS,
    USER_UPDATE_REQUEST,
+   USERNAME_VALIDATION_REQUEST,
+   USERNAME_VALIDATION_SUCCESS,
+   USERNAME_VALIDATION_FAIL,
 } from '../constants/userConstants'
 // import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 
@@ -40,7 +46,7 @@ export const login = (email, password) => async (dispatch) => {
       }
 
       const { data } = await axios.post(
-         '/api/users/login',
+         `${process.env.REACT_APP_API_URL}/users/login`,
          { email, password },
          config
       )
@@ -62,19 +68,85 @@ export const login = (email, password) => async (dispatch) => {
    }
 }
 
-export const logout = () => (dispatch) => {
-   localStorage.removeItem('userInfo')
-   localStorage.removeItem('cartItems')
-   localStorage.removeItem('shippingAddress')
-   localStorage.removeItem('paymentMethod')
-   dispatch({ type: USER_LOGOUT })
-   dispatch({ type: USER_DETAILS_RESET })
-   // dispatch({ type: ORDER_LIST_MY_RESET })
-   dispatch({ type: USER_LIST_RESET })
-   document.location.href = '/login'
+export const logout = () => async (dispatch, getState) => {
+   try {
+      dispatch({ type: USER_LOGOUT_REQUEST })
+
+      const {
+         userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+         headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+         },
+      }
+
+      const { data } = await axios.get(
+         `${process.env.REACT_APP_API_URL}/users/logout`,
+         config
+      )
+
+      dispatch({ type: USER_LOGOUT_SUCCESS, payload: data })
+
+      localStorage.removeItem('userInfo')
+      localStorage.removeItem('cartItems')
+      localStorage.removeItem('shippingAddress')
+      localStorage.removeItem('paymentMethod')
+      dispatch({ type: USER_LOGOUT })
+      dispatch({ type: USER_DETAILS_RESET })
+      // dispatch({ type: ORDER_LIST_MY_RESET })
+      dispatch({ type: USER_LIST_RESET })
+      document.location.href = '/login'
+   } catch (error) {
+      dispatch({
+         type: USER_LOGOUT_FAIL,
+         payload:
+            error.response && error.response.data.message
+               ? error.response.data.message
+               : error.message,
+      })
+
+      localStorage.removeItem('userInfo')
+      localStorage.removeItem('cartItems')
+      localStorage.removeItem('shippingAddress')
+      localStorage.removeItem('paymentMethod')
+      dispatch({ type: USER_LOGOUT })
+      dispatch({ type: USER_DETAILS_RESET })
+      // dispatch({ type: ORDER_LIST_MY_RESET })
+      dispatch({ type: USER_LIST_RESET })
+      document.location.href = '/login'
+   }
 }
 
-export const register = (name, email, password) => async (dispatch) => {
+export const validateUsername = (username) => async (dispatch) => {
+   try {
+      dispatch({
+         type: USERNAME_VALIDATION_REQUEST,
+      })
+
+      const { data } = await axios.get(
+         `${process.env.REACT_APP_API_URL}/users/validateUsername?username=${username}`
+      )
+
+      dispatch({
+         type: USERNAME_VALIDATION_SUCCESS,
+         payload: data,
+      })
+   } catch (error) {
+      dispatch({
+         type: USERNAME_VALIDATION_FAIL,
+         payload:
+            error.response && error.response.data.message
+               ? error.response.data.message
+               : error.message,
+      })
+   }
+}
+
+export const register = (name, username, email, password) => async (
+   dispatch
+) => {
    try {
       dispatch({
          type: USER_REGISTER_REQUEST,
@@ -87,8 +159,8 @@ export const register = (name, email, password) => async (dispatch) => {
       }
 
       const { data } = await axios.post(
-         '/api/users',
-         { name, email, password },
+         `${process.env.REACT_APP_API_URL}/users`,
+         { name, username, email, password },
          config
       )
 

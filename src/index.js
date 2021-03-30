@@ -6,11 +6,14 @@ import './index.css'
 import './bootstrap.min (3).css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import { CloudinaryContext } from 'cloudinary-react'
 
 ReactDOM.render(
    <React.StrictMode>
       <Provider store={store}>
-         <App />
+         <CloudinaryContext cloudName={process.env.REACT_APP_CLOUDINARY_CLOUD}>
+            <App />
+         </CloudinaryContext>
       </Provider>
    </React.StrictMode>,
    document.getElementById('root')
