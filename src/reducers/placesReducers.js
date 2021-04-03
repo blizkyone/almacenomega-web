@@ -11,7 +11,31 @@ import {
    PICKUP_HISTORY_REQUEST,
    PICKUP_HISTORY_SUCCESS,
    PICKUP_HISTORY_FAIL,
+   PICKUP_TRACKING_REQUEST,
+   PICKUP_TRACKING_SUCCESS,
+   PICKUP_TRACKING_FAIL,
 } from '../constants/placesConstants'
+
+export const pickupTrackingReducer = (
+   state = { pickupTrackingList: [] },
+   action
+) => {
+   switch (action.type) {
+      case PICKUP_TRACKING_REQUEST:
+         return { loading: true }
+      case PICKUP_TRACKING_SUCCESS:
+         return {
+            loading: false,
+            pickupTrackingList: action.payload.pickupTrackingList,
+            page: action.payload.page,
+            pages: action.payload.pages,
+         }
+      case PICKUP_TRACKING_FAIL:
+         return { loading: false, error: action.payload, pickupHistory: [] }
+      default:
+         return state
+   }
+}
 
 export const pickupHistoryReducer = (state = { pickupHistory: [] }, action) => {
    switch (action.type) {

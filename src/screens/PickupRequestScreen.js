@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useReducer } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import SelectLocation from '../components/pickupRequestFlow/SelectLocation.js'
 import EditLocation from '../components/pickupRequestFlow/EditLocation.js'
 
@@ -8,6 +8,7 @@ const locationDefaultState = {
       lat: 20.9670154,
       lng: -89.6242833,
    },
+   name: '',
    address: '',
    locationCoordinates: {},
    handling: 'Ligero',
@@ -33,8 +34,6 @@ const PickupRequestScreen = ({ history }) => {
       locationReducer,
       locationDefaultState
    )
-
-   const dispatch = useDispatch()
 
    const userLogin = useSelector((state) => state.userLogin)
    const { userInfo } = userLogin

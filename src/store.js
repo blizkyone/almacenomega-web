@@ -24,6 +24,7 @@ import {
    locationAddressReducer,
    requestPickupReducer,
    pickupHistoryReducer,
+   pickupTrackingReducer,
 } from './reducers/placesReducers'
 
 const reducer = combineReducers({
@@ -45,6 +46,7 @@ const reducer = combineReducers({
    placeAddress: locationAddressReducer,
    pickupRequest: requestPickupReducer,
    pickupHistory: pickupHistoryReducer,
+   pickupTracking: pickupTrackingReducer,
 })
 
 const inventoryFromStorage = localStorage.getItem('inventory')

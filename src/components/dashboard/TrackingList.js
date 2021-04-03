@@ -2,20 +2,27 @@ import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Table, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import moment from 'moment'
 import Message from '../Message'
 import Loader from '../Loader'
-import { listProducts } from '../../actions/productActions'
+import { getPickupTrackingList } from '../../actions/placesActions.js'
 
 const TrackingList = ({ match, history }) => {
    //  const pageNumber = match.params.pageNumber || 1
 
    const dispatch = useDispatch()
 
-   const productList = useSelector((state) => state.productList)
-   const { loading, error, products, page, pages } = productList
+   const pickupTrackingState = useSelector((state) => state.pickupTracking)
+   const {
+      loading,
+      error,
+      pickupTrackingList,
+      page,
+      pages,
+   } = pickupTrackingState
 
    useEffect(() => {
-      dispatch(listProducts())
+      dispatch(getPickupTrackingList(1))
    }, [])
 
    return (
@@ -32,47 +39,39 @@ const TrackingList = ({ match, history }) => {
                <Table striped bordered hover responsive className='table-sm'>
                   <thead>
                      <tr>
-                        <th>ORDEN</th>
+                        <th>DESTINO</th>
+                        <th>DIRECCION</th>
                         <th>FECHA DE SOLICITUD</th>
-                        <th>NUMERO DE ITEMS</th>
                         <th>STATUS</th>
                      </tr>
                   </thead>
-                  <tbody>
-                     {products?.map((product) => (
-                        <tr key={product._id}>
-                           <td>{product.name}</td>
-                           {/* <td>${product.price}</td> */}
-                           {/* <td>{product.category}</td> */}
-                           <td>{product.brand}</td>
-                           <td>{product.description}</td>
-                           <td>{product.area}</td>
-                           <td>{product.weight}</td>
-                           <td>
-                              <LinkContainer
-                                 to={`/admin/product/${product._id}/edit`}
-                              >
-                                 <Button variant='light' className='btn-sm'>
-                                    <i className='fas fa-edit'></i>
-                                 </Button>
-                              </LinkContainer>
-                              {/* <Button
-                      variant='danger'
-                      className='btn-sm'
-                      onClick={() => deleteHandler(product._id)}
-                    >
-                      <i className='fas fa-trash'></i>
-                    </Button> */}
-                           </td>
-                        </tr>
-                     ))}
-                  </tbody>
+
+                  {loading ? (
+                     <Loader />
+                  ) : error ? (
+                     <Message variant='danger'>{error}</Message>
+                  ) : (
+                     <tbody>
+                        {pickupTrackingList?.map((x, i) => (
+                           <tr key={i} onClick={(e) => alert('clicked')}>
+                              <td>{x.name}</td>
+                              <td>{x.address}</td>
+                              <td>
+                                 {moment
+                                    .utc(x.updatedAt)
+                                    .format('MM/DD/YYYY HH:mm')}
+                              </td>
+                              <td>{x.status}</td>
+                           </tr>
+                        ))}
+                     </tbody>
+                  )}
                </Table>
                {/* <Paginate pages={pages} page={page} isAdmin={true} /> */}
             </>
          )}
          <Row className='align-items-center'>
-            <h3 className='my-3'>Recolecciones</h3>
+            <h3 className='my-3'>RECOLECCIONES</h3>
          </Row>
          {loading ? (
             <Loader />
@@ -83,41 +82,33 @@ const TrackingList = ({ match, history }) => {
                <Table striped bordered hover responsive className='table-sm'>
                   <thead>
                      <tr>
-                        <th>ORDEN</th>
+                        <th>DESTINO</th>
+                        <th>DIRECCION</th>
                         <th>FECHA DE SOLICITUD</th>
-                        <th>NUMERO DE ITEMS</th>
                         <th>STATUS</th>
                      </tr>
                   </thead>
-                  <tbody>
-                     {products?.map((product) => (
-                        <tr key={product._id}>
-                           <td>{product.name}</td>
-                           {/* <td>${product.price}</td> */}
-                           {/* <td>{product.category}</td> */}
-                           <td>{product.brand}</td>
-                           <td>{product.description}</td>
-                           <td>{product.area}</td>
-                           <td>{product.weight}</td>
-                           <td>
-                              <LinkContainer
-                                 to={`/admin/product/${product._id}/edit`}
-                              >
-                                 <Button variant='light' className='btn-sm'>
-                                    <i className='fas fa-edit'></i>
-                                 </Button>
-                              </LinkContainer>
-                              {/* <Button
-                      variant='danger'
-                      className='btn-sm'
-                      onClick={() => deleteHandler(product._id)}
-                    >
-                      <i className='fas fa-trash'></i>
-                    </Button> */}
-                           </td>
-                        </tr>
-                     ))}
-                  </tbody>
+
+                  {loading ? (
+                     <Loader />
+                  ) : error ? (
+                     <Message variant='danger'>{error}</Message>
+                  ) : (
+                     <tbody>
+                        {pickupTrackingList?.map((x, i) => (
+                           <tr key={i} onClick={(e) => alert('clicked')}>
+                              <td>{x.name}</td>
+                              <td>{x.address}</td>
+                              <td>
+                                 {moment
+                                    .utc(x.updatedAt)
+                                    .format('MM/DD/YYYY HH:mm')}
+                              </td>
+                              <td>{x.status}</td>
+                           </tr>
+                        ))}
+                     </tbody>
+                  )}
                </Table>
                {/* <Paginate pages={pages} page={page} isAdmin={true} /> */}
             </>

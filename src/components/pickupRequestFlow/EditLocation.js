@@ -49,6 +49,7 @@ const EditLocation = ({
    const [query, setQuery] = useState('')
    const [mapCenter, setMapCenter] = useState(locationState.mapCenter)
    const [zoom, setZoom] = useState(12)
+   const [name, setName] = useState(locationState.name)
    const [locationAddress, setLocationAddress] = useState(locationState.address)
    const [locationCoordinates, setLocationCoordinates] = useState(
       locationState.locationCoordinates
@@ -171,6 +172,19 @@ const EditLocation = ({
                   validated={validated}
                   onSubmit={handleRequestPickup}
                >
+                  <Form.Group controlId='name'>
+                     <Form.Label>Nombre</Form.Label>
+                     <Form.Control
+                        required
+                        type='name'
+                        placeholder='Casa, oficina, etc'
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                     ></Form.Control>
+                     <Form.Text>
+                        Seleccione una ubicación y edite la dirección
+                     </Form.Text>
+                  </Form.Group>
                   <Form.Group controlId='address'>
                      <Form.Label>Dirección</Form.Label>
                      <Form.Control

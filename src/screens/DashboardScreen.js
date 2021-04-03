@@ -15,10 +15,6 @@ const DashboardScreen = ({ history, match }) => {
       history.push('/pickup-request')
    }
 
-   const requestTransport = () => {
-      alert('Transport requested')
-   }
-
    useEffect(() => {
       setKey(match.params.page)
    }, [match])

@@ -11,8 +11,45 @@ import {
    PICKUP_HISTORY_REQUEST,
    PICKUP_HISTORY_SUCCESS,
    PICKUP_HISTORY_FAIL,
+   PICKUP_TRACKING_REQUEST,
+   PICKUP_TRACKING_SUCCESS,
+   PICKUP_TRACKING_FAIL,
 } from '../constants/placesConstants'
 import axios from 'axios'
+
+export const getPickupTrackingList = (page) => async (dispatch, getState) => {
+   try {
+      dispatch({ type: PICKUP_TRACKING_REQUEST })
+
+      const {
+         userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+         headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+         },
+      }
+
+      const { data } = await axios.get(
+         `${process.env.REACT_APP_API_URL}/places/pickup-tracking?pageNumber=${page}`,
+         config
+      )
+
+      dispatch({
+         type: PICKUP_TRACKING_SUCCESS,
+         payload: data,
+      })
+   } catch (error) {
+      dispatch({
+         type: PICKUP_TRACKING_FAIL,
+         payload:
+            error.response && error.response.data.message
+               ? error.response.data.message
+               : error.message,
+      })
+   }
+}
 
 export const getPickupHistory = (page) => async (dispatch, getState) => {
    try {
