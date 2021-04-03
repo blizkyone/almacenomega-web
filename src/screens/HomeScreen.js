@@ -6,7 +6,12 @@ const HomeScreen = () => {
    return (
       <>
          <Card style={{ width: '18rem' }}>
-            <Image publicId='samples/ecommerce/leather-bag-gray' loading='lazy'>
+            <Image
+               publicId='samples/ecommerce/leather-bag-gray'
+               loading='lazy'
+               height='180'
+               width='286'
+            >
                <Placeholder />
             </Image>
             <Card.Body>

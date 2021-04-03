@@ -2,11 +2,11 @@ import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Table, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import { listProducts } from '../actions/productActions'
+import Message from '../Message'
+import Loader from '../Loader'
+import { listProducts } from '../../actions/productActions'
 
-const ProductListScreen = ({ match }) => {
+const ProductList = ({ match, history }) => {
    //  const pageNumber = match.params.pageNumber || 1
 
    const dispatch = useDispatch()
@@ -18,29 +18,21 @@ const ProductListScreen = ({ match }) => {
       dispatch(listProducts())
    }, [])
 
-   const requestDelivery = () => {
-      alert('Delivery requested')
-   }
-
    return (
       <>
-         <Row className='align-items-center'>
-            <Col>
-               <h1>Products</h1>
-            </Col>
-            <Col className='text-right'>
-               <Button className='my-3' onClick={requestDelivery}>
-                  <i className='fas fa-plus'></i> Request Delivery
-               </Button>
-            </Col>
-         </Row>
          {loading ? (
             <Loader />
          ) : error ? (
             <Message variant='danger'>{error}</Message>
          ) : (
             <>
-               <Table striped bordered hover responsive className='table-sm'>
+               <Table
+                  striped
+                  bordered
+                  hover
+                  responsive
+                  className='table-sm my-3'
+               >
                   <thead>
                      <tr>
                         <th>NAME</th>
@@ -88,4 +80,4 @@ const ProductListScreen = ({ match }) => {
    )
 }
 
-export default ProductListScreen
+export default ProductList

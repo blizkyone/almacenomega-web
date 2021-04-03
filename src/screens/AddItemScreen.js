@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Form, Button } from 'react-bootstrap'
+import { useSelector, useDispatch } from 'react-redux'
+import { createProduct } from '../actions/productActions'
 import FormContainer from '../components/FormContainer'
 import NewItemDetails from '../components/NewItemFlow/NewItemDetails'
 import NewItemPackaging from '../components/NewItemFlow/NewItemPackaging'
@@ -22,12 +22,19 @@ const AddItemScreen = ({ history }) => {
    const [length, setLength] = useState()
    const [weight, setWeight] = useState()
 
+   const dispatch = useDispatch()
+
    const userLogin = useSelector((state) => state.userLogin)
    const { userInfo } = userLogin
 
    const handleBarcodeSubmit = (e) => {
       e.preventDefault()
       alert('Barcode submitted')
+   }
+
+   const createItem = (e) => {
+      e.preventDefault()
+      dispatch(createProduct())
    }
 
    const newItemDetailsProps = {

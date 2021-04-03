@@ -19,6 +19,12 @@ import {
    userUpdateReducer,
    usernameValidationReducer,
 } from './reducers/userReducers'
+import {
+   placeAutocompleteReducer,
+   locationAddressReducer,
+   requestPickupReducer,
+   pickupHistoryReducer,
+} from './reducers/placesReducers'
 
 const reducer = combineReducers({
    productList: productListReducer,
@@ -35,6 +41,10 @@ const reducer = combineReducers({
    userList: userListReducer,
    userDelete: userDeleteReducer,
    userUpdate: userUpdateReducer,
+   placeAutocomplete: placeAutocompleteReducer,
+   placeAddress: locationAddressReducer,
+   pickupRequest: requestPickupReducer,
+   pickupHistory: pickupHistoryReducer,
 })
 
 const inventoryFromStorage = localStorage.getItem('inventory')
@@ -48,6 +58,7 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
 const initialState = {
    productList: inventoryFromStorage,
    userLogin: { userInfo: userInfoFromStorage },
+   // placeCoordinates: { coordinates: { lat: 20.9670154, lng: -89.6242833 } },
 }
 
 const middleware = [thunk]
