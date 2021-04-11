@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
-import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button, Row, Col } from 'react-bootstrap'
+import { Table, Row, Pagination } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
 import Message from '../Message'
@@ -24,6 +23,10 @@ const TrackingList = ({ match, history }) => {
    useEffect(() => {
       dispatch(getPickupTrackingList(1))
    }, [])
+
+   const fetchNextPage = (nextPage) => {
+      if (nextPage != page) dispatch(getPickupTrackingList(nextPage))
+   }
 
    return (
       <Row>
@@ -67,7 +70,18 @@ const TrackingList = ({ match, history }) => {
                      </tbody>
                   )}
                </Table>
-               {/* <Paginate pages={pages} page={page} isAdmin={true} /> */}
+               {pages > 1 && (
+                  <Pagination>
+                     {[...Array(pages).keys()].map((x) => (
+                        <Pagination.Item
+                           key={x + 1}
+                           onClick={() => fetchNextPage(x + 1)}
+                        >
+                           {x + 1}
+                        </Pagination.Item>
+                     ))}
+                  </Pagination>
+               )}
             </>
          )}
          <Row className='align-items-center'>

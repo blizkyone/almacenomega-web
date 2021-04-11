@@ -12,7 +12,7 @@ const DashboardScreen = ({ history, match }) => {
    }
 
    const requestPickup = () => {
-      history.push('/pickup-request')
+      history.push('/request-pickup')
    }
 
    useEffect(() => {
@@ -23,10 +23,10 @@ const DashboardScreen = ({ history, match }) => {
       <>
          <Row>
             <Button className='m-3' onClick={requestPickup}>
-               <i class='fas fa-truck'></i> Recolección
+               <i className='fas fa-truck'></i> Recolección
             </Button>
             <Button className='m-3' onClick={requestDelivery}>
-               <i class='fas fa-truck'></i> Envío
+               <i className='fas fa-truck'></i> Envío
             </Button>
          </Row>
 

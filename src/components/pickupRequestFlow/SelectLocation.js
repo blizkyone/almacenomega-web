@@ -41,10 +41,10 @@ const SelectLocation = ({ setStage, locationDispatch }) => {
       <>
          <Row className='justify-content-between'>
             <h4 className='my-3'>Elige la ubicación</h4>
-            <Button>Nueva Ubicación</Button>
+            <Button onClick={(_) => setStage(1)}>Nueva Ubicación</Button>
          </Row>
          <Row className='my-3'>
-            <h5>Historial</h5>
+            {pickupHistory?.length > 0 && <h5>Historial</h5>}
          </Row>
          <Row>
             {loading ? (

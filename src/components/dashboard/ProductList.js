@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button, Row, Col } from 'react-bootstrap'
+import { Table, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../Message'
 import Loader from '../Loader'
 import { listProducts } from '../../actions/productActions'
 
-const ProductList = ({ match, history }) => {
+const ProductList = () => {
    //  const pageNumber = match.params.pageNumber || 1
 
    const dispatch = useDispatch()

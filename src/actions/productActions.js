@@ -45,6 +45,7 @@ export const listProducts = (keyword = '', pageNumber = '') => async (
          payload: data,
       })
    } catch (error) {
+      console.log(error)
       dispatch({
          type: PRODUCT_LIST_FAIL,
          payload:

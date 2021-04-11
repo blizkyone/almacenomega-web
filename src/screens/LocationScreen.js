@@ -5,7 +5,7 @@ import {
    queryPlaces,
    getAddress,
    requestPickup,
-} from '../../actions/placesActions.js'
+} from '../actions/placesActions'
 import {
    Card,
    Form,
@@ -17,7 +17,7 @@ import {
    Col,
    Modal,
 } from 'react-bootstrap'
-import Message from '../Message.js'
+import Message from '../components/Message.js'
 
 const searchBarStyle = {
    width: '380px',
@@ -40,20 +40,19 @@ const selectLocationButtonStyle = {
    top: '10px',
 }
 
-const EditLocation = ({ locationState, history }) => {
+const RequestPickupScreen = ({ history }) => {
    const [query, setQuery] = useState('')
-   const [mapCenter, setMapCenter] = useState(locationState.mapCenter)
+   const [mapCenter, setMapCenter] = useState({
+      lat: 20.9670154,
+      lng: -89.6242833,
+   })
    const [zoom, setZoom] = useState(12)
-   const [name, setName] = useState(locationState.name)
-   const [locationAddress, setLocationAddress] = useState(locationState.address)
-   const [locationCoordinates, setLocationCoordinates] = useState(
-      locationState.locationCoordinates
-   )
-   const [pickupRequirement, setPickupRequirement] = useState(
-      locationState.handling
-   )
-   const [comments, setComments] = useState(locationState.comments)
-   const [person, setPerson] = useState(locationState.person)
+   const [locationAddress, setLocationAddress] = useState('')
+   const [locationCoordinates, setLocationCoordinates] = useState()
+   const [pickupRequirement, setPickupRequirement] = useState('Ligero')
+   const [comments, setComments] = useState('')
+   const [person, setPerson] = useState('')
+   const [phone, setPhone] = useState('')
 
    const [validated, setValidated] = useState(false)
    const [message, setMessage] = useState('')
@@ -78,10 +77,6 @@ const EditLocation = ({ locationState, history }) => {
       error: newPickupRequestError,
       request: newRequest,
    } = newPickupRequest
-
-   // useEffect(() => {
-   //    setLocationCoordinates(locationState.locationCoordinates)
-   // }, [])
 
    useEffect(() => {
       if (newRequest) setShow(true)
@@ -121,7 +116,6 @@ const EditLocation = ({ locationState, history }) => {
                lng: locationCoordinates.lng,
                comments,
                handling: pickupRequirement,
-               person,
             })
          )
       } else if (!locationCoordinates) {
@@ -138,14 +132,9 @@ const EditLocation = ({ locationState, history }) => {
    }
 
    const handleMapChange = ({ center, zoom }) => {
-      let coords = { lat: center.lat(), lng: center.lng() }
       setLocationCoordinates(null)
-      setMapCenter(coords)
+      setMapCenter(center)
       setZoom(zoom)
-   }
-
-   const handleAceptar = () => {
-      history.push('/dashboard/tracking')
    }
 
    return (
@@ -165,16 +154,6 @@ const EditLocation = ({ locationState, history }) => {
                   validated={validated}
                   onSubmit={handleRequestPickup}
                >
-                  <Form.Group controlId='name'>
-                     <Form.Label>Nombre</Form.Label>
-                     <Form.Control
-                        required
-                        type='name'
-                        placeholder='Casa, oficina, cliente A, etc'
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                     ></Form.Control>
-                  </Form.Group>
                   <Form.Group controlId='address'>
                      <Form.Label>Dirección</Form.Label>
                      <Form.Control
@@ -215,10 +194,12 @@ const EditLocation = ({ locationState, history }) => {
                         <option>Pesado</option>
                      </Form.Control>
                      <Form.Text>
-                        {'Ligero: 1 persona puede cargarlo y pesa < 20kg'}
+                        {'Ligero: 1 persona puede cargarlo. Peso < 20kg'}
                      </Form.Text>
                      <Form.Text>
-                        {'Pesado: Requiere 2 o más personas o pesa > 20kg'}
+                        {
+                           'Pesado: Requiere 2 o más personas. Peso > 20kg. Dimensiones > 1m'
+                        }
                      </Form.Text>
                   </Form.Group>
                   <Form.Group controlId='address'>
@@ -243,7 +224,18 @@ const EditLocation = ({ locationState, history }) => {
                         Nombre de quien entregará los artículos
                      </Form.Text>
                   </Form.Group>
-
+                  <Form.Group controlId='telefono'>
+                     <Form.Label>Telefono de quien entrega</Form.Label>
+                     <Form.Control
+                        type='text'
+                        placeholder='Teléfono de quien entrega'
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                     ></Form.Control>
+                     <Form.Text>
+                        Teléfono de quien entregará los artículos
+                     </Form.Text>
+                  </Form.Group>
                   {message && <Message variant='danger'>{message}</Message>}
                   <Button type='submit'>
                      {newPickupRequestLoading ? (
@@ -262,7 +254,7 @@ const EditLocation = ({ locationState, history }) => {
                      }}
                      center={mapCenter}
                      zoom={zoom}
-                     onDragEnd={handleMapChange}
+                     onChange={handleMapChange}
                      options={{
                         //    zoomControl: false,
                         fullscreenControl: false,
@@ -349,11 +341,16 @@ const EditLocation = ({ locationState, history }) => {
                Nuestro equipo se pondrá de acuerdo contigo!
             </Modal.Body>
             <Modal.Footer>
-               <Button onClick={handleAceptar}>Aceptar</Button>
+               <Button variant='secondary' onClick={() => setShow(false)}>
+                  Close
+               </Button>
+               <Button variant='primary' onClick={() => setShow(false)}>
+                  Save Changes
+               </Button>
             </Modal.Footer>
          </Modal>
       </Col>
    )
 }
 
-export default EditLocation
+export default RequestPickupScreen

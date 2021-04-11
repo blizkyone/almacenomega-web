@@ -14,8 +14,48 @@ import {
    PICKUP_TRACKING_REQUEST,
    PICKUP_TRACKING_SUCCESS,
    PICKUP_TRACKING_FAIL,
+   SUBMITTED_PICKUP_REQUEST,
+   SUBMITTED_PICKUP_SUCCESS,
+   SUBMITTED_PICKUP_FAIL,
 } from '../constants/placesConstants'
 import axios from 'axios'
+
+export const getSubmittedPickupRequests = (page) => async (
+   dispatch,
+   getState
+) => {
+   try {
+      dispatch({ type: SUBMITTED_PICKUP_REQUEST })
+
+      const {
+         userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+         headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+         },
+      }
+
+      const { data } = await axios.get(
+         `${process.env.REACT_APP_API_URL}/places/pickup-requests?pageNumber=${page}`,
+         config
+      )
+
+      dispatch({
+         type: SUBMITTED_PICKUP_SUCCESS,
+         payload: data,
+      })
+   } catch (error) {
+      dispatch({
+         type: SUBMITTED_PICKUP_FAIL,
+         payload:
+            error.response && error.response.data.message
+               ? error.response.data.message
+               : error.message,
+      })
+   }
+}
 
 export const getPickupTrackingList = (page) => async (dispatch, getState) => {
    try {

@@ -25,7 +25,13 @@ import {
    requestPickupReducer,
    pickupHistoryReducer,
    pickupTrackingReducer,
+   pickupRequestsReducer,
 } from './reducers/placesReducers'
+import {
+   getMyRouteReducer,
+   deleteMyRouteReducer,
+   createMyRouteReducer,
+} from './reducers/routesReducers'
 
 const reducer = combineReducers({
    productList: productListReducer,
@@ -47,6 +53,10 @@ const reducer = combineReducers({
    pickupRequest: requestPickupReducer,
    pickupHistory: pickupHistoryReducer,
    pickupTracking: pickupTrackingReducer,
+   pickupRequests: pickupRequestsReducer,
+   myRoute: getMyRouteReducer,
+   createMyRoute: createMyRouteReducer,
+   deleteMyRoute: deleteMyRouteReducer,
 })
 
 const inventoryFromStorage = localStorage.getItem('inventory')
