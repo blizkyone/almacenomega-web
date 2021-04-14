@@ -1,18 +1,20 @@
 import React, { useState } from 'react'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Spinner } from 'react-bootstrap'
 import Message from '../Message'
 
 const NewItemPackaging = ({
    setStage,
-   width,
-   setWidth,
-   height,
-   setHeight,
-   length,
-   setLength,
-   weight,
-   setWeight,
+   loading,
+   productState,
+   createItem,
+   productDispatch,
+   match,
 }) => {
+   const [width, setWidth] = useState(productState.width)
+   const [height, setHeight] = useState(productState.height)
+   const [length, setLength] = useState(productState.length)
+   const [weight, setWeight] = useState(productState.weight)
+
    const [message, setMessage] = useState('')
    const [validated, setValidated] = useState(false)
 
@@ -20,25 +22,48 @@ const NewItemPackaging = ({
       e.preventDefault()
       e.currentTarget.checkValidity()
       if (width && length && height && weight) {
-         //  setStage(1)
-         alert('Ready')
+         productDispatch({
+            type: 'SET_VALUES',
+            payload: { width, length, height, weight },
+         })
+         createItem()
       } else {
          setValidated(true)
          setMessage('All fields required')
       }
    }
 
+   const handleSetWidth = (value) => {
+      setWidth(value)
+      productDispatch({ type: 'SET_WIDTH', payload: value })
+   }
+
+   const handleSetLength = (value) => {
+      setLength(value)
+      productDispatch({ type: 'SET_LENGTH', payload: value })
+   }
+
+   const handleSetHeight = (value) => {
+      setHeight(value)
+      productDispatch({ type: 'SET_HEIGHT', payload: value })
+   }
+
+   const handleSetWeight = (value) => {
+      setWeight(value)
+      productDispatch({ type: 'SET_WEIGHT', payload: value })
+   }
+
    return (
       <Form noValidate validated={validated} onSubmit={handleNext}>
          <h1>Packaging</h1>
          <Form.Group controlId='width'>
-            <Form.Label>Quantity</Form.Label>
+            <Form.Label>Ancho - cm</Form.Label>
             <Form.Control
                required
                type='input'
                placeholder={0}
                value={width}
-               onChange={(e) => setWidth(e.target.value)}
+               onChange={(e) => handleSetWidth(e.target.value)}
             ></Form.Control>
             <Form.Text>Lado corto de la base</Form.Text>
             <Form.Control.Feedback type='invalid'>
@@ -47,13 +72,13 @@ const NewItemPackaging = ({
          </Form.Group>
 
          <Form.Group controlId='length'>
-            <Form.Label>Quantity</Form.Label>
+            <Form.Label>Largo - cm</Form.Label>
             <Form.Control
                required
                type='input'
                placeholder={0}
                value={length}
-               onChange={(e) => setLength(e.target.value)}
+               onChange={(e) => handleSetLength(e.target.value)}
             ></Form.Control>
             <Form.Text>Lado largo de la base</Form.Text>
             <Form.Control.Feedback type='invalid'>
@@ -62,13 +87,13 @@ const NewItemPackaging = ({
          </Form.Group>
 
          <Form.Group controlId='height'>
-            <Form.Label>Quantity</Form.Label>
+            <Form.Label>Alto - cm</Form.Label>
             <Form.Control
                required
                type='input'
                placeholder={0}
                value={height}
-               onChange={(e) => setHeight(e.target.value)}
+               onChange={(e) => handleSetHeight(e.target.value)}
             ></Form.Control>
             <Form.Text>Alto desde la base</Form.Text>
             <Form.Control.Feedback type='invalid'>
@@ -77,13 +102,13 @@ const NewItemPackaging = ({
          </Form.Group>
 
          <Form.Group controlId='weight'>
-            <Form.Label>Quantity</Form.Label>
+            <Form.Label>Peso - kg</Form.Label>
             <Form.Control
                required
                type='input'
                placeholder={0}
                value={weight}
-               onChange={(e) => setWeight(e.target.value)}
+               onChange={(e) => handleSetWeight(e.target.value)}
             ></Form.Control>
             <Form.Text>Peso total del producto</Form.Text>
             <Form.Control.Feedback type='invalid'>
@@ -95,7 +120,13 @@ const NewItemPackaging = ({
          <Button className='btn-danger' onClick={() => setStage(0)}>
             Back
          </Button>
-         <Button type='submit'>Next</Button>
+         <Button type='submit'>
+            {loading ? (
+               <Spinner as='span' animation='border' size='sm' />
+            ) : (
+               'Next'
+            )}
+         </Button>
       </Form>
    )
 }

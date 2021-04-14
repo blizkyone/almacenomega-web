@@ -5,7 +5,7 @@ import HomeScreen from './screens/HomeScreen'
 import LoginScreen from './screens/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen'
 import AdminScreen from './screens/AdminScreen'
-import AddItemScreen from './screens/AddItemScreen'
+import PickupAddItemScreen from './screens/PickupAddItemScreen'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import RequestPickupScreen from './screens/RequestPickupScreen'
@@ -13,6 +13,7 @@ import DashboardScreen from './screens/DashboardScreen'
 import PickupRequestsScreen from './screens/PickupRequestsScreen'
 import MyRouteScreen from './screens/MyRouteScreen'
 import PickupOrderScreen from './screens/PickupOrderScreen'
+import PickupItemPhotos from './screens/PickupItemPhotos'
 
 const App = () => {
    return (
@@ -26,11 +27,25 @@ const App = () => {
                <Route path='/dashboard/:page' component={DashboardScreen} />
                <Route path='/request-pickup' component={RequestPickupScreen} />
                <Route path='/admin' component={AdminScreen} exact />
-               <Route path='/admin/addItem' component={AddItemScreen} exact />
+               <Route
+                  path='/admin/addItem'
+                  component={PickupAddItemScreen}
+                  exact
+               />
                <Route path='/admin/mi-ruta' component={MyRouteScreen} exact />
                <Route
-                  path='/admin/pickup-screen'
+                  path='/admin/mi-ruta/:order'
                   component={PickupOrderScreen}
+                  exact
+               />
+               <Route
+                  path='/admin/mi-ruta/:order/agregar-item'
+                  component={PickupAddItemScreen}
+                  exact
+               />
+               <Route
+                  path='/admin/mi-ruta/:order/:item/imagenes'
+                  component={PickupItemPhotos}
                   exact
                />
                <Route

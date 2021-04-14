@@ -32,6 +32,15 @@ import {
    deleteMyRouteReducer,
    createMyRouteReducer,
 } from './reducers/routesReducers'
+import {
+   orderDetailsReducer,
+   orderAddItemReducer,
+   orderDeleteItemReducer,
+} from './reducers/orderReducers'
+import {
+   mediaUploadPhotoReducer,
+   mediaGetItemPhotosReducer,
+} from './reducers/mediaReducers'
 
 const reducer = combineReducers({
    productList: productListReducer,
@@ -51,9 +60,14 @@ const reducer = combineReducers({
    placeAutocomplete: placeAutocompleteReducer,
    placeAddress: locationAddressReducer,
    pickupRequest: requestPickupReducer,
+   pickupRequests: pickupRequestsReducer,
    pickupHistory: pickupHistoryReducer,
    pickupTracking: pickupTrackingReducer,
-   pickupRequests: pickupRequestsReducer,
+   orderDetails: orderDetailsReducer,
+   orderAddItem: orderAddItemReducer,
+   orderDeleteItem: orderDeleteItemReducer,
+   mediaUploadPhoto: mediaUploadPhotoReducer,
+   mediaGetItemPhotos: mediaGetItemPhotosReducer,
    myRoute: getMyRouteReducer,
    createMyRoute: createMyRouteReducer,
    deleteMyRoute: deleteMyRouteReducer,

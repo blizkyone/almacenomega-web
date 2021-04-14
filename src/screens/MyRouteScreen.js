@@ -169,9 +169,12 @@ const MyRouteScreen = ({ history }) => {
                                  <td>
                                     <Button
                                        onClick={(_) =>
-                                          history.push('/admin/pickup-screen', {
-                                             userId: x.user,
-                                          })
+                                          history.push(
+                                             `/admin/mi-ruta/${x._id}`,
+                                             {
+                                                userId: x.user,
+                                             }
+                                          )
                                        }
                                     >
                                        Orden

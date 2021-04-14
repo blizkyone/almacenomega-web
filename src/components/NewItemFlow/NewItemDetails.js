@@ -3,31 +3,31 @@ import { Form, Button, InputGroup } from 'react-bootstrap'
 import Message from '../Message'
 
 const NewItemDetails = ({
-   handleBarcodeSubmit,
+   // handleBarcodeSubmit,
    setStage,
-   barcode,
-   setBarcode,
-   name,
-   setName,
-   brand,
-   setBrand,
-   category,
-   setCategory,
-   description,
-   setDescription,
-   condition,
-   setCondition,
-   qty,
-   setQty,
+   productState,
+   productDispatch,
 }) => {
+   const [barcode, setBarcode] = useState(productState.barcode)
+   const [name, setName] = useState(productState.name)
+   const [brand, setBrand] = useState(productState.brand)
+   const [condition, setCondition] = useState(productState.condition)
+   const [qty, setQty] = useState(productState.qty)
+   const [description, setDescription] = useState(productState.description)
+   const [categories, setCategories] = useState(productState.categories)
+
    const [message, setMessage] = useState('')
    const [validated, setValidated] = useState(false)
 
    const handleNext = (e) => {
       e.preventDefault()
       e.currentTarget.checkValidity()
-      if (name && brand && category && description && condition && qty) {
+      if (name && brand && categories && description && condition && qty) {
          setValidated(true)
+         productDispatch({
+            type: 'SET_VALUES',
+            payload: { name, brand, categories, description, condition, qty },
+         })
          setStage(1)
       } else {
          setValidated(true)
@@ -37,7 +37,7 @@ const NewItemDetails = ({
 
    return (
       <>
-         <Form onSubmit={handleBarcodeSubmit}>
+         {/* <Form onSubmit={handleBarcodeSubmit}>
             <Form.Group controlId='barcode'>
                <Form.Label>Código de barras - opcional</Form.Label>
                <InputGroup>
@@ -54,7 +54,7 @@ const NewItemDetails = ({
                   </InputGroup.Append>
                </InputGroup>
             </Form.Group>
-         </Form>
+         </Form> */}
          <Form noValidate validated={validated} onSubmit={handleNext}>
             <h1>{name || 'Nuevo Item'}</h1>
 
@@ -91,8 +91,8 @@ const NewItemDetails = ({
                <Form.Control
                   required
                   as='select'
-                  value={category}
-                  onChange={(e) => setCategory([e.target.value])}
+                  value={categories}
+                  onChange={(e) => setCategories([e.target.value])}
                >
                   <option></option>
                   <option>Juegos y Juguetes</option>
@@ -117,18 +117,15 @@ const NewItemDetails = ({
                </Form.Control.Feedback>
             </Form.Group>
 
-            <Form.Group controlId='state'>
+            <Form.Group controlId='condition'>
                <Form.Label>Condición</Form.Label>
                <Form.Control
                   required
-                  as='select'
+                  as='textarea'
+                  placeholder='Nuevo, usado, observaciones...'
                   value={condition}
                   onChange={(e) => setCondition(e.target.value)}
-               >
-                  <option></option>
-                  <option>Nuevo</option>
-                  <option>Usado</option>
-               </Form.Control>
+               ></Form.Control>
                <Form.Control.Feedback type='invalid'>
                   Requerido
                </Form.Control.Feedback>

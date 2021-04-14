@@ -77,7 +77,7 @@ export const listProductDetails = (id) => async (dispatch) => {
    }
 }
 
-export const createProduct = () => async (dispatch, getState) => {
+export const createProduct = (productData) => async (dispatch, getState) => {
    try {
       dispatch({
          type: PRODUCT_CREATE_REQUEST,
@@ -95,7 +95,7 @@ export const createProduct = () => async (dispatch, getState) => {
 
       const { data } = await axios.post(
          `${process.env.REACT_APP_API_URL}/products`,
-         {},
+         productData,
          config
       )
 

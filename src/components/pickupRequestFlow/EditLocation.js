@@ -93,7 +93,18 @@ const EditLocation = ({ locationState, history }) => {
    }, [address])
 
    useEffect(() => {
-      if (placeAddressError) setMainMessage(placeAddressError)
+      if (placeAddressError) {
+         if (
+            placeAddressError ===
+            "Cannot read property 'formatted_address' of undefined"
+         ) {
+            setLocationAddress(
+               'No pudimos obtener la dirección :(, por favor borre este mensaje y escríbala'
+            )
+         } else {
+            setMainMessage(placeAddressError)
+         }
+      }
       if (placesError) setMainMessage(placesError)
       if (newPickupRequestError) setMainMessage(newPickupRequestError)
    }, [placeAddressError, placesError, newPickupRequestError])
