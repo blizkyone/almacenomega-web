@@ -82,6 +82,7 @@ const MyRouteScreen = ({ history }) => {
       setShow(false)
       // alert('Route to be deleted')
    }
+
    const handleLocationSelected = (e, index) => {
       //supposed to go to screen to add products to this user's account
       alert('go to add item to user account')
@@ -127,6 +128,7 @@ const MyRouteScreen = ({ history }) => {
                            <th>TELEFONO</th>
                            <th>DIRECCION</th>
                            <th>MANEJO</th>
+                           <th>ESTADO</th>
                            <th>ACCION</th>
                         </tr>
                      </thead>
@@ -166,6 +168,7 @@ const MyRouteScreen = ({ history }) => {
                                     </a>
                                  </td>
                                  <td>{x.handling}</td>
+                                 <td>{x.status}</td>
                                  <td>
                                     <Button
                                        onClick={(_) =>

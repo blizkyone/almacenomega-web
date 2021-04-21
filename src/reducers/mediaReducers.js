@@ -7,7 +7,26 @@ import {
    GET_ITEM_PHOTOS_SUCCESS,
    GET_ITEM_PHOTOS_FAIL,
    GET_ITEM_PHOTOS_RESET,
+   DELETE_ITEM_PHOTO_REQUEST,
+   DELETE_ITEM_PHOTO_SUCCESS,
+   DELETE_ITEM_PHOTO_FAIL,
+   DELETE_ITEM_PHOTO_RESET,
 } from '../constants/mediaConstants'
+
+export const mediaDeleteItemPhotoReducer = (state = {}, action) => {
+   switch (action.type) {
+      case DELETE_ITEM_PHOTO_REQUEST:
+         return { loading: true }
+      case DELETE_ITEM_PHOTO_SUCCESS:
+         return { loading: false, photo: action.payload }
+      case DELETE_ITEM_PHOTO_FAIL:
+         return { loading: false, success: false, error: action.payload }
+      case DELETE_ITEM_PHOTO_RESET:
+         return {}
+      default:
+         return state
+   }
+}
 
 export const mediaGetItemPhotosReducer = (
    state = { photoArray: [] },

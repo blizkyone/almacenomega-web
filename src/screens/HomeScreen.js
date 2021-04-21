@@ -1,19 +1,25 @@
 import React from 'react'
-import { Row, Col, Card, Button } from 'react-bootstrap'
-import { Image, Placeholder } from 'cloudinary-react'
+import { Row, Col, Card, Button, Image } from 'react-bootstrap'
+// import { Image, Placeholder } from 'cloudinary-react'
 
 const HomeScreen = () => {
    return (
       <>
          <Card style={{ width: '18rem' }}>
-            <Image
+            {/* <Image
                publicId='samples/ecommerce/leather-bag-gray'
                loading='lazy'
                height='180'
                width='286'
             >
                <Placeholder />
-            </Image>
+            </Image> */}
+            <Image
+               fluid
+               src={
+                  'https://s3.us-east-1.amazonaws.com/aoitems/6077246fc9c8285d6c0202e4/b1ddac17-269e-4ef7-a9c9-d5d6e1dbe314.jpg'
+               }
+            />
             <Card.Body>
                <Card.Title>Card Title</Card.Title>
                <Card.Text>

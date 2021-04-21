@@ -1,16 +1,47 @@
 import React, { useEffect, useState, useReducer, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Row, Col, Form, Button, Spinner, Card } from 'react-bootstrap'
+import { Row, Col, Form, Button, Spinner, Card, Image } from 'react-bootstrap'
+import Radium from 'radium'
 import Message from '../components/Message'
-import { uploadPicture, getItemPictures } from '../actions/mediaActions'
-import { Image, Placeholder } from 'cloudinary-react'
+import {
+   uploadPicture,
+   getItemPictures,
+   deleteItemPhoto,
+} from '../actions/mediaActions'
 import { GET_ITEM_PHOTOS_RESET } from '../constants/mediaConstants'
+// import { Image, Placeholder } from 'cloudinary-react'
 
-const PickupItemPhotos = ({ match }) => {
+const styles = {
+   pstyle: {
+      backgroundColor: 'red',
+      position: 'absolute',
+      bottom: 0,
+      right: 0,
+      margin: '2px',
+      padding: '5px',
+      borderRadius: '5px',
+      ':hover': {
+         cursor: 'pointer',
+      },
+   },
+   back: {
+      margin: '10px',
+      ':hover': {
+         cursor: 'pointer',
+      },
+   },
+}
+
+const PickupItemPhotos = ({ match, history }) => {
+   const [photoArray, setPhotoArray] = useState([])
    const [errorMsg, setErrorMsg] = useState('')
+   const [selectedPhoto, setSelectedPhoto] = useState('')
+
    const dispatch = useDispatch()
 
    const hiddenFileInput = useRef(null)
+
+   const redirect = match.url.split(match.params.item)[0].slice(0, -1)
 
    const mediaUploadPhotoState = useSelector((state) => state.mediaUploadPhoto)
    const { loading, error, photo } = mediaUploadPhotoState
@@ -21,21 +52,37 @@ const PickupItemPhotos = ({ match }) => {
    const {
       loading: getPhotoLoading,
       error: getPhotoError,
-      photoArray,
+      photoArray: uploadedPhotos,
    } = mediaGetItemPhotosState
+
+   const mediaDeleteItemPhotoState = useSelector(
+      (state) => state.mediaDeleteItemPhoto
+   )
+   const {
+      loading: deleteLoading,
+      error: deleteError,
+      photo: deletePhoto,
+   } = mediaDeleteItemPhotoState
+
+   useEffect(() => {
+      dispatch({ type: GET_ITEM_PHOTOS_RESET })
+   }, [])
 
    useEffect(() => {
       dispatch(getItemPictures(match.params.item))
-      //   return dispatch({
-      //      type: GET_ITEM_PHOTOS_RESET,
-      //   })
-   }, [photo])
+   }, [photo, deletePhoto])
 
    useEffect(() => {
-      setErrorMsg(error || getPhotoError)
-   }, [error, getPhotoError])
+      // console.log(uploadedPhotos)
+      setPhotoArray(uploadedPhotos)
+      setSelectedPhoto(uploadedPhotos[0])
+   }, [uploadedPhotos])
 
-   const handleClick = (event) => {
+   useEffect(() => {
+      setErrorMsg(error || getPhotoError || deleteError)
+   }, [error, getPhotoError, deleteError])
+
+   const handleClick = () => {
       hiddenFileInput.current.click()
    }
 
@@ -44,29 +91,31 @@ const PickupItemPhotos = ({ match }) => {
       const selectedFile = e.target.files[0]
       //   console.log(selectedFile)
       if (!selectedFile) {
+         setErrorMsg('No image was selected')
          return
       }
 
-      //   const reader = new FileReader()
+      // const reader = new FileReader()
       // reader.onload = (function(aImg) { return function(e) {
       //     aImg.style.backgroundImage = `url(${e.target.result})`
       // }; })(newImgEl.current);
       // reader.readAsDataURL(selectedFile)
 
-      const fd = new FormData()
-      fd.append('file', selectedFile)
-      fd.append('upload_preset', 'react_upload')
-      fd.append('tags', match.params.item)
-      fd.append('folder', match.params.item)
+      // fd.append('upload_preset', 'react_upload')
+      // fd.append('tags', match.params.item)
+      // fd.append('folder', match.params.item)
 
-      dispatch(uploadPicture(fd))
+      dispatch(uploadPicture(selectedFile, match.params.item))
    }
 
    return getPhotoLoading ? (
       <Spinner animation='border' size='lg' />
    ) : (
-      <Row>
-         <Col md={6}>
+      <Col>
+         <Row className='justify-content-between align-items-center'>
+            <p onClick={(_) => history.push(redirect)} style={styles.back}>
+               {'<<< Back'}
+            </p>
             <Form>
                <Button onClick={handleClick}>
                   {loading ? (
@@ -83,21 +132,57 @@ const PickupItemPhotos = ({ match }) => {
                   onChange={handleAddPhoto}
                />
             </Form>
-            <Row>
-               {photoArray.map((photo) => (
-                  <Col key={photo.public_id} lg={6}>
-                     <Card>
-                        <Image publicId={photo.public_id}>
-                           <Placeholder />
-                        </Image>
-                     </Card>
-                  </Col>
-               ))}
-            </Row>
-         </Col>
-         <Col md={6}>Column 1</Col>
-      </Row>
+         </Row>
+         <Row>
+            <Col md={6}>
+               <Row>
+                  {photoArray.map((photo, i) => (
+                     <Col key={photo} xs={4}>
+                        <Card>
+                           <Image
+                              key={i}
+                              src={photo}
+                              onClick={(_) => setSelectedPhoto(photo)}
+                           />
+                           <div
+                              key={photo}
+                              style={styles.pstyle}
+                              onClick={(_) =>
+                                 dispatch(
+                                    deleteItemPhoto(photo, match.params.item)
+                                 )
+                              }
+                           >
+                              {deleteLoading ? (
+                                 <Spinner animation='border' size='sm' />
+                              ) : (
+                                 <p style={{ margin: '0px' }}>
+                                    <i
+                                       className='fas fa-trash-alt'
+                                       style={{
+                                          color: 'white',
+                                       }}
+                                    ></i>
+                                 </p>
+                              )}
+                           </div>
+                        </Card>
+                     </Col>
+                  ))}
+               </Row>
+            </Col>
+            <Col md={6}>
+               {selectedPhoto ? (
+                  <Card>
+                     <Image src={selectedPhoto} />
+                  </Card>
+               ) : (
+                  'Second column'
+               )}
+            </Col>
+         </Row>
+      </Col>
    )
 }
 
-export default PickupItemPhotos
+export default Radium(PickupItemPhotos)

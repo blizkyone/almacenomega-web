@@ -36,10 +36,12 @@ import {
    orderDetailsReducer,
    orderAddItemReducer,
    orderDeleteItemReducer,
+   orderDeliverReducer,
 } from './reducers/orderReducers'
 import {
    mediaUploadPhotoReducer,
    mediaGetItemPhotosReducer,
+   mediaDeleteItemPhotoReducer,
 } from './reducers/mediaReducers'
 
 const reducer = combineReducers({
@@ -66,8 +68,10 @@ const reducer = combineReducers({
    orderDetails: orderDetailsReducer,
    orderAddItem: orderAddItemReducer,
    orderDeleteItem: orderDeleteItemReducer,
+   orderDeliver: orderDeliverReducer,
    mediaUploadPhoto: mediaUploadPhotoReducer,
    mediaGetItemPhotos: mediaGetItemPhotosReducer,
+   mediaDeleteItemPhoto: mediaDeleteItemPhotoReducer,
    myRoute: getMyRouteReducer,
    createMyRoute: createMyRouteReducer,
    deleteMyRoute: deleteMyRouteReducer,
