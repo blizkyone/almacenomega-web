@@ -9,8 +9,126 @@ import {
    DELETE_MY_ROUTE_REQUEST,
    DELETE_MY_ROUTE_SUCCESS,
    DELETE_MY_ROUTE_FAIL,
+   GET_ACTIVE_ROUTES_REQUEST,
+   GET_ACTIVE_ROUTES_SUCCESS,
+   GET_ACTIVE_ROUTES_FAIL,
+   GET_ROUTE_ITEMS_REQUEST,
+   GET_ROUTE_ITEMS_SUCCESS,
+   GET_ROUTE_ITEMS_FAIL,
+   ROUTE_FINISH_FAIL,
+   ROUTE_FINISH_SUCCESS,
+   ROUTE_FINISH_REQUEST,
 } from '../constants/routesConstants'
 import axios from 'axios'
+import { logout } from './userActions'
+
+export const finishRoute = (route) => async (dispatch, getState) => {
+   try {
+      dispatch({
+         type: ROUTE_FINISH_REQUEST,
+      })
+
+      const {
+         userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+         headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+         },
+      }
+
+      const { data } = await axios.get(
+         `${process.env.REACT_APP_API_URL}/routes/${route}/finish`,
+         config
+      )
+
+      dispatch({
+         type: ROUTE_FINISH_SUCCESS,
+         payload: data,
+      })
+   } catch (error) {
+      const message =
+         error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+      if (message === 'Not authorized, token failed') {
+         dispatch(logout())
+      }
+      dispatch({
+         type: ROUTE_FINISH_FAIL,
+         payload: message,
+      })
+   }
+}
+
+export const getRouteItems = (route) => async (dispatch, getState) => {
+   try {
+      dispatch({ type: GET_ROUTE_ITEMS_REQUEST })
+
+      const {
+         userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+         headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+         },
+      }
+
+      const { data } = await axios.get(
+         `${process.env.REACT_APP_API_URL}/routes/items/${route}`,
+         config
+      )
+
+      dispatch({
+         type: GET_ROUTE_ITEMS_SUCCESS,
+         payload: data,
+      })
+   } catch (error) {
+      dispatch({
+         type: GET_ROUTE_ITEMS_FAIL,
+         payload:
+            error.response && error.response.data.message
+               ? error.response.data.message
+               : error.message,
+      })
+   }
+}
+
+export const getActiveRoutes = () => async (dispatch, getState) => {
+   try {
+      dispatch({ type: GET_ACTIVE_ROUTES_REQUEST })
+
+      const {
+         userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+         headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+         },
+      }
+
+      const { data } = await axios.get(
+         `${process.env.REACT_APP_API_URL}/routes/active`,
+         config
+      )
+
+      dispatch({
+         type: GET_ACTIVE_ROUTES_SUCCESS,
+         payload: data,
+      })
+   } catch (error) {
+      dispatch({
+         type: GET_ACTIVE_ROUTES_FAIL,
+         payload:
+            error.response && error.response.data.message
+               ? error.response.data.message
+               : error.message,
+      })
+   }
+}
 
 export const deleteMyRoute = () => async (dispatch, getState) => {
    try {

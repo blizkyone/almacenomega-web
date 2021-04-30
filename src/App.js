@@ -14,6 +14,9 @@ import PickupRequestsScreen from './screens/PickupRequestsScreen'
 import MyRouteScreen from './screens/MyRouteScreen'
 import PickupOrderScreen from './screens/PickupOrderScreen'
 import PickupItemPhotos from './screens/PickupItemPhotos'
+import BarcodeScreen from './screens/BarcodeScreen'
+import RouteReception from './screens/RouteReception'
+import RouteDetailReception from './screens/RouteDetailReception'
 
 const App = () => {
    return (
@@ -21,12 +24,22 @@ const App = () => {
          <Header />
          <main className='py-3'>
             <Container>
+               <Route path='/barcode/:barcode' component={BarcodeScreen} />
                <Route path='/login' component={LoginScreen} />
                <Route path='/register' component={RegisterScreen} />
                <Route path='/dashboard' component={DashboardScreen} exact />
                <Route path='/dashboard/:page' component={DashboardScreen} />
                <Route path='/request-pickup' component={RequestPickupScreen} />
                <Route path='/admin' component={AdminScreen} exact />
+               <Route
+                  path='/admin/recepcion-de-rutas'
+                  component={RouteReception}
+                  exact
+               />
+               <Route
+                  path='/admin/recepcion-de-rutas/:ruta'
+                  component={RouteDetailReception}
+               />
                <Route
                   path='/admin/addItem'
                   component={PickupAddItemScreen}

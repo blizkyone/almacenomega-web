@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button } from 'react-bootstrap'
+import { Table, Button, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../Message'
 import Loader from '../Loader'
@@ -17,6 +17,10 @@ const ProductList = () => {
    useEffect(() => {
       dispatch(listProducts())
    }, [])
+
+   useEffect(() => {
+      console.log(products)
+   }, [products])
 
    return (
       <>
@@ -35,39 +39,29 @@ const ProductList = () => {
                >
                   <thead>
                      <tr>
+                        <th>QTY</th>
                         <th>NAME</th>
                         <th>BRAND</th>
                         <th>DESCRIPTION</th>
-                        <th>SIZE</th>
-                        <th>WEIGHT</th>
-                        <th>EDIT</th>
+                        <th>M2</th>
+                        <th>PHOTO</th>
                      </tr>
                   </thead>
                   <tbody>
                      {products?.map((product) => (
                         <tr key={product._id}>
+                           <td>{product.qty}</td>
                            <td>{product.name}</td>
-                           {/* <td>${product.price}</td> */}
-                           {/* <td>{product.category}</td> */}
                            <td>{product.brand}</td>
                            <td>{product.description}</td>
                            <td>{product.area}</td>
-                           <td>{product.weight}</td>
                            <td>
-                              <LinkContainer
-                                 to={`/admin/product/${product._id}/edit`}
-                              >
-                                 <Button variant='light' className='btn-sm'>
-                                    <i className='fas fa-edit'></i>
-                                 </Button>
-                              </LinkContainer>
-                              {/* <Button
-                      variant='danger'
-                      className='btn-sm'
-                      onClick={() => deleteHandler(product._id)}
-                    >
-                      <i className='fas fa-trash'></i>
-                    </Button> */}
+                              {
+                                 <Image
+                                    style={{ height: '100px', width: '100px' }}
+                                    src={`https://s3.us-east-1.amazonaws.com/aoitems/${product.images[0]}`}
+                                 />
+                              }
                            </td>
                         </tr>
                      ))}

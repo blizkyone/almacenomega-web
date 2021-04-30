@@ -29,8 +29,11 @@ import {
 } from './reducers/placesReducers'
 import {
    getMyRouteReducer,
-   deleteMyRouteReducer,
+   routesDeleteMyRouteReducer,
    createMyRouteReducer,
+   routesGetActiveReducer,
+   routesGetRouteItemsReducer,
+   routeFinishReducer,
 } from './reducers/routesReducers'
 import {
    orderDetailsReducer,
@@ -74,7 +77,10 @@ const reducer = combineReducers({
    mediaDeleteItemPhoto: mediaDeleteItemPhotoReducer,
    myRoute: getMyRouteReducer,
    createMyRoute: createMyRouteReducer,
-   deleteMyRoute: deleteMyRouteReducer,
+   deleteMyRoute: routesDeleteMyRouteReducer,
+   routesGetActive: routesGetActiveReducer,
+   routeGetRouteItems: routesGetRouteItemsReducer,
+   routeFinish: routeFinishReducer,
 })
 
 const inventoryFromStorage = localStorage.getItem('inventory')

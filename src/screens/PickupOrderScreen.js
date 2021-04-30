@@ -9,6 +9,7 @@ import {
 import Message from '../components/Message'
 import { ORDER_DELIVER_RESET } from '../constants/orderConstants'
 import Radium from 'radium'
+import Barcode from 'react-barcode'
 
 const styles = {
    back: {
@@ -43,6 +44,7 @@ const PickupOrderScreen = ({ history, match }) => {
 
    const orderId = match.params.order
    const redirect = `${match.url.split(orderId)[0]}`
+   const barcodeUrl = `${match.url.split('/')[0]}`
 
    useEffect(() => {
       dispatch(getOrderDetails(orderId))
@@ -52,6 +54,13 @@ const PickupOrderScreen = ({ history, match }) => {
       setShow(false)
       if (order && order.orderItems) {
          setProducts(order.orderItems)
+         // console.log(order.orderItems)
+         // console.log(order)
+         if (!order.validated) {
+            setMissingPicture(true)
+         } else {
+            setMissingPicture(false)
+         }
       }
    }, [order])
 
@@ -61,7 +70,7 @@ const PickupOrderScreen = ({ history, match }) => {
    }, [error, deleteError, deliverError])
 
    useEffect(() => {
-      console.log(deliverSuccess)
+      // console.log(deliverSuccess)
       if (deliverSuccess) {
          console.log('deliver success')
          history.push(redirect)
@@ -126,12 +135,17 @@ const PickupOrderScreen = ({ history, match }) => {
                   <th>CONDICION</th>
                   <th>ELIMINAR</th>
                   <th>FOTO</th>
+                  <th>BARCODE</th>
                </tr>
             </thead>
             <tbody>
                {products?.map((product) => {
-                  if (product.item.images.length === 0 && !missingPicture)
-                     setMissingPicture(true)
+                  // if (
+                  //    product.item.images &&
+                  //    product.item.images.length === 0 &&
+                  //    !missingPicture
+                  // )
+                  //    setMissingPicture(true)
                   return (
                      <tr key={product._id}>
                         <td>{product.name}</td>
@@ -153,7 +167,8 @@ const PickupOrderScreen = ({ history, match }) => {
                         </td>
                         <td>
                            <div>
-                              {product.item.images.length > 0 ? (
+                              {product.item.images &&
+                              product.item.images.length > 0 ? (
                                  <Image
                                     style={{ height: '100px', width: '100px' }}
                                     src={`https://s3.us-east-1.amazonaws.com/aoitems/${product.item.images[0]}`}
@@ -176,6 +191,19 @@ const PickupOrderScreen = ({ history, match }) => {
                                  </Button>
                               )}
                            </div>
+                        </td>
+                        <td>
+                           <Button
+                              className='btn-sm'
+                              onClick={(_) =>
+                                 window.open(
+                                    `${barcodeUrl}/barcode/${product.barcode}`,
+                                    'Barcode'
+                                 )
+                              }
+                           >
+                              <i className='fas fa-barcode'></i>
+                           </Button>
                         </td>
                      </tr>
                   )

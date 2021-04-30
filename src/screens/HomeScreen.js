@@ -14,12 +14,12 @@ const HomeScreen = () => {
             >
                <Placeholder />
             </Image> */}
-            <Image
+            {/* <Image
                fluid
                src={
                   'https://s3.us-east-1.amazonaws.com/aoitems/6077246fc9c8285d6c0202e4/b1ddac17-269e-4ef7-a9c9-d5d6e1dbe314.jpg'
                }
-            />
+            /> */}
             <Card.Body>
                <Card.Title>Card Title</Card.Title>
                <Card.Text>

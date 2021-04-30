@@ -28,6 +28,17 @@ const AdminScreen = ({ history, match }) => {
             </LinkContainer>
          </Row>
          <Row className='m-3'>
+            <LinkContainer to={`${match.url}/recepcion-de-rutas`}>
+               <Button
+                  type='button'
+                  className='btn btn-info btn-lg btn-block'
+                  // onClick={() => history.push('/admin/addItem')}
+               >
+                  Almacen: recepcionar rutas
+               </Button>
+            </LinkContainer>
+         </Row>
+         <Row className='m-3'>
             <LinkContainer to={`${match.url}/solicitudes-recoleccion`}>
                <Button
                   type='button'

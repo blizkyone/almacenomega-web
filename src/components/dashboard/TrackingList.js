@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Table, Row, Pagination } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
@@ -7,6 +7,8 @@ import Loader from '../Loader'
 import { getPickupTrackingList } from '../../actions/placesActions.js'
 
 const TrackingList = ({ match, history }) => {
+   const [envios, setEnvios] = useState([])
+   const [recolecciones, setRecolecciones] = useState([])
    //  const pageNumber = match.params.pageNumber || 1
 
    const dispatch = useDispatch()
@@ -23,6 +25,16 @@ const TrackingList = ({ match, history }) => {
    useEffect(() => {
       dispatch(getPickupTrackingList(1))
    }, [])
+
+   useEffect(() => {
+      if (pickupTrackingList && pickupTrackingList.length > 0) {
+         setRecolecciones(
+            pickupTrackingList.filter((x) => x.status !== 'Entregado')
+         )
+      } else {
+         setRecolecciones([])
+      }
+   }, [pickupTrackingList])
 
    const fetchNextPage = (nextPage) => {
       if (nextPage != page) dispatch(getPickupTrackingList(nextPage))
@@ -55,7 +67,7 @@ const TrackingList = ({ match, history }) => {
                      <Message variant='danger'>{error}</Message>
                   ) : (
                      <tbody>
-                        {pickupTrackingList?.map((x, i) => (
+                        {envios.map((x, i) => (
                            <tr key={i} onClick={(e) => alert('clicked')}>
                               <td>{x.name}</td>
                               <td>{x.address}</td>
@@ -109,7 +121,7 @@ const TrackingList = ({ match, history }) => {
                      <Message variant='danger'>{error}</Message>
                   ) : (
                      <tbody>
-                        {pickupTrackingList?.map((x, i) => (
+                        {recolecciones.map((x, i) => (
                            <tr key={i} onClick={(e) => alert('clicked')}>
                               <td>{x.name}</td>
                               <td>{x.address}</td>

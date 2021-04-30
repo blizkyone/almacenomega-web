@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Row, Pagination, Col, Card, Button } from 'react-bootstrap'
+import {
+   Table,
+   Row,
+   Pagination,
+   Col,
+   Card,
+   Button,
+   Alert,
+} from 'react-bootstrap'
+import Radium from 'radium'
+import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import GoogleMapReact from 'google-map-react'
 import moment from 'moment'
@@ -9,12 +19,22 @@ import { getSubmittedPickupRequests } from '../actions/placesActions.js'
 import { createMyRoute, getMyRoute } from '../actions/routesActions.js'
 import PlaceMapIcon from '../components/PlaceMapIcon'
 
+const styles = {
+   link: {
+      margin: '10px',
+      ':hover': {
+         cursor: 'pointer',
+      },
+   },
+}
+
 const PickupRequestScreen = ({ history, match }) => {
    const [markers, setMarkers] = useState([])
    const [mapCenter, setMapCenter] = useState({
       lat: 20.9670154,
       lng: -89.6242833,
    })
+   const [message, setMessage] = useState('')
    // const [zoom, setZoom] = useState(10)
    //  const pageNumber = match.params.pageNumber || 1
 
@@ -26,14 +46,31 @@ const PickupRequestScreen = ({ history, match }) => {
    const myRouteState = useSelector((state) => state.myRoute)
    const { myRoute } = myRouteState
 
+   const createMyRouteState = useSelector((state) => state.createMyRoute)
+   const {
+      loading: createRouteLoading,
+      error: createRouteError,
+      newRoute,
+   } = createMyRouteState
+
    useEffect(() => {
       dispatch(getMyRoute())
       dispatch(getSubmittedPickupRequests(1))
    }, [dispatch])
 
    useEffect(() => {
-      if (myRoute.length > 0) history.push(`/admin/mi-ruta`)
+      // console.log('here')
+      dispatch(getSubmittedPickupRequests(1))
+   }, [newRoute])
+
+   useEffect(() => {
+      // console.log(myRoute)
+      if (myRoute.length > 0) setMessage('Ruta pendiente')
    }, [myRoute, history])
+
+   // useEffect(() => {
+   // if (createRouteError) setMessage(createRouteError)
+   // }, [createRouteError])
 
    useEffect(() => {
       //Agregamos la cualidad de hover a los marcadores del mapa
@@ -76,19 +113,29 @@ const PickupRequestScreen = ({ history, match }) => {
    }
 
    const handleCreateRoute = () => {
-      console.log('en handleCreateRoute')
       let route = markers.filter((x) => x.selected === true)
       if (route.length > 0) {
          dispatch(createMyRoute(route.map((x) => x._id)))
-         dispatch(getMyRoute())
       } else {
-         alert('Select a destination')
+         alert('Elige al menos un destino')
       }
    }
 
    return (
       <Row>
          <Col lg={6}>
+            {message && (
+               <Alert variant='warning'>
+                  <div style={styles.link}>
+                     <LinkContainer to='/admin/mi-ruta'>
+                        <p>{message}</p>
+                     </LinkContainer>
+                  </div>
+               </Alert>
+            )}
+            {createRouteError && (
+               <Alert variant='danger'>{createRouteError}</Alert>
+            )}
             <Row className='align-items-center'>
                <Col>
                   <h3 className='my-3'>Solicitudes</h3>
@@ -198,4 +245,4 @@ const PickupRequestScreen = ({ history, match }) => {
    )
 }
 
-export default PickupRequestScreen
+export default Radium(PickupRequestScreen)

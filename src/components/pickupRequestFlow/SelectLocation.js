@@ -16,6 +16,10 @@ const SelectLocation = ({ setStage, locationDispatch }) => {
       dispatch(getPickupHistory())
    }, [])
 
+   useEffect(() => {
+      console.log(pickupHistory)
+   }, [pickupHistory])
+
    const fetchNextPage = (nextPage) => {
       if (nextPage != page) dispatch(getPickupHistory(nextPage))
    }
