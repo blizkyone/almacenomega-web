@@ -27,6 +27,10 @@ const TrackingList = ({ match, history }) => {
       dispatch(getPickupTrackingList(1))
    }, [])
 
+   // useEffect(() => {
+   //    console.log(recolecciones)
+   // }, [recolecciones])
+
    useEffect(() => {
       if (pickupTrackingList && pickupTrackingList.length > 0) {
          setRecolecciones(
@@ -51,9 +55,8 @@ const TrackingList = ({ match, history }) => {
                <Table striped bordered hover responsive className='table-sm'>
                   <thead>
                      <tr>
-                        <th>ORDEN</th>
-                        <th>FECHA DE SOLICITUD</th>
-                        <th>NUMERO DE ITEMS</th>
+                        <th>DIRECCION</th>
+                        <th>FECHA</th>
                         <th>STATUS</th>
                      </tr>
                   </thead>
@@ -64,7 +67,7 @@ const TrackingList = ({ match, history }) => {
                            <td>{x.address}</td>
                            <td>
                               {moment
-                                 .utc(x.updatedAt)
+                                 .utc(x.deliveredAt)
                                  .format('MM/DD/YYYY HH:mm')}
                            </td>
                            <td>{x.status}</td>
@@ -87,20 +90,19 @@ const TrackingList = ({ match, history }) => {
                <Table striped bordered hover responsive className='table-sm'>
                   <thead>
                      <tr>
-                        <th>ORDEN</th>
-                        <th>FECHA DE SOLICITUD</th>
-                        <th>NUMERO DE ITEMS</th>
+                        <th>DIRECCION</th>
+                        <th>FECHA</th>
                         <th>STATUS</th>
                      </tr>
                   </thead>
                   <tbody>
                      {recolecciones.map((x, i) => (
                         <tr key={i} onClick={(e) => alert('clicked')}>
-                           <td>{x.name}</td>
                            <td>{x.address}</td>
                            <td>
                               {moment
-                                 .utc(x.updatedAt)
+                                 .utc(x.deliveredAt)
+                                 .local()
                                  .format('MM/DD/YYYY HH:mm')}
                            </td>
                            <td>{x.status}</td>

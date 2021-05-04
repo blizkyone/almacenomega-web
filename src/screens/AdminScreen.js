@@ -16,7 +16,7 @@ const AdminScreen = ({ history, match }) => {
 
    return (
       <>
-         <Row className='m-3'>
+         {/* <Row className='m-3'>
             <LinkContainer to={`${match.url}/addItem`}>
                <Button
                   type='button'
@@ -26,7 +26,7 @@ const AdminScreen = ({ history, match }) => {
                   Agregar producto
                </Button>
             </LinkContainer>
-         </Row>
+         </Row> */}
          <Row className='m-3'>
             <LinkContainer to={`${match.url}/recepcion-de-rutas`}>
                <Button

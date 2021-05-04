@@ -8,13 +8,13 @@ const NewItemDetails = ({
    productState,
    productDispatch,
 }) => {
-   const [barcode, setBarcode] = useState(productState.barcode)
+   // const [barcode, setBarcode] = useState(productState.barcode)
    const [name, setName] = useState(productState.name)
    const [brand, setBrand] = useState(productState.brand)
-   const [condition, setCondition] = useState(productState.condition)
+   // const [condition, setCondition] = useState(productState.condition)
    const [qty, setQty] = useState(productState.qty)
    const [description, setDescription] = useState(productState.description)
-   const [categories, setCategories] = useState(productState.categories)
+   // const [categories, setCategories] = useState(productState.categories)
 
    const [message, setMessage] = useState('')
    const [validated, setValidated] = useState(false)
@@ -22,11 +22,11 @@ const NewItemDetails = ({
    const handleNext = (e) => {
       e.preventDefault()
       e.currentTarget.checkValidity()
-      if (name && brand && categories && description && condition && qty) {
+      if (name && description && qty) {
          setValidated(true)
          productDispatch({
             type: 'SET_VALUES',
-            payload: { name, brand, categories, description, condition, qty },
+            payload: { name, brand, description, qty },
          })
          setStage(1)
       } else {
@@ -75,9 +75,8 @@ const NewItemDetails = ({
             <Form.Group controlId='brand'>
                <Form.Label>Marca</Form.Label>
                <Form.Control
-                  required
                   type='text'
-                  placeholder='Marca'
+                  placeholder='Opcional'
                   value={brand}
                   onChange={(e) => setBrand(e.target.value)}
                ></Form.Control>
@@ -86,7 +85,7 @@ const NewItemDetails = ({
                </Form.Control.Feedback>
             </Form.Group>
 
-            <Form.Group controlId='state'>
+            {/* <Form.Group controlId='state'>
                <Form.Label>Categoría</Form.Label>
                <Form.Control
                   required
@@ -101,7 +100,7 @@ const NewItemDetails = ({
                <Form.Control.Feedback type='invalid'>
                   Requerido
                </Form.Control.Feedback>
-            </Form.Group>
+            </Form.Group> */}
 
             <Form.Group controlId='description'>
                <Form.Label>Descripción</Form.Label>
@@ -117,7 +116,7 @@ const NewItemDetails = ({
                </Form.Control.Feedback>
             </Form.Group>
 
-            <Form.Group controlId='condition'>
+            {/* <Form.Group controlId='condition'>
                <Form.Label>Condición</Form.Label>
                <Form.Control
                   required
@@ -129,7 +128,7 @@ const NewItemDetails = ({
                <Form.Control.Feedback type='invalid'>
                   Requerido
                </Form.Control.Feedback>
-            </Form.Group>
+            </Form.Group> */}
 
             <Form.Group controlId='qty'>
                <Form.Label>Cantidad</Form.Label>

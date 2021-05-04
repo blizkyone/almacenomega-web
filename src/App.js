@@ -9,6 +9,7 @@ import PickupAddItemScreen from './screens/PickupAddItemScreen'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import RequestPickupScreen from './screens/RequestPickupScreen'
+import RequestDeliveryScreen from './screens/RequestDeliveryScreen'
 import DashboardScreen from './screens/DashboardScreen'
 import PickupRequestsScreen from './screens/PickupRequestsScreen'
 import MyRouteScreen from './screens/MyRouteScreen'
@@ -30,6 +31,10 @@ const App = () => {
                <Route path='/dashboard' component={DashboardScreen} exact />
                <Route path='/dashboard/:page' component={DashboardScreen} />
                <Route path='/request-pickup' component={RequestPickupScreen} />
+               <Route
+                  path='/request-delivery'
+                  component={RequestDeliveryScreen}
+               />
                <Route path='/admin' component={AdminScreen} exact />
                <Route
                   path='/admin/recepcion-de-rutas'

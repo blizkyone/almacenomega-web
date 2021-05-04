@@ -9,13 +9,13 @@ import { ORDER_ADD_ITEM_RESET } from '../constants/orderConstants'
 import Message from '../components/Message'
 
 const productDefaultState = {
-   barcode: '',
+   // barcode: '',
    name: '',
    brand: '',
-   condition: '',
+   // condition: '',
    qty: '',
    description: '',
-   categories: [],
+   // categories: [],
    width: '',
    height: '',
    length: '',

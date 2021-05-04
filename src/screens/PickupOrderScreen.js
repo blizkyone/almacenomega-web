@@ -132,7 +132,7 @@ const PickupOrderScreen = ({ history, match }) => {
                   <th>QTY</th>
                   <th>MARCA</th>
                   <th>DESCRIPCION</th>
-                  <th>CONDICION</th>
+                  {/* <th>CONDICION</th> */}
                   <th>ELIMINAR</th>
                   <th>FOTO</th>
                   <th>BARCODE</th>
@@ -152,7 +152,7 @@ const PickupOrderScreen = ({ history, match }) => {
                         <td>{product.qty}</td>
                         <td>{product.brand}</td>
                         <td>{product.description}</td>
-                        <td>{product.condition}</td>
+                        {/* <td>{product.condition}</td> */}
                         <td>
                            <Button
                               onClick={(_) => handleShowModal(product.item)}

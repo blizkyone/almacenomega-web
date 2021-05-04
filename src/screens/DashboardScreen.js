@@ -1,14 +1,47 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Tabs, Tab, Row, Button } from 'react-bootstrap'
 import ProductList from '../components/dashboard/ProductList.js'
 import TrackingList from '../components/dashboard/TrackingList.js'
 import History from '../components/dashboard/History.js'
+import { listProducts } from '../actions/productActions'
 
 const DashboardScreen = ({ history, match }) => {
    const [key, setKey] = useState(match.params.page || 'product-list')
 
+   const [productList, setProductList] = useState([])
+
+   const dispatch = useDispatch()
+
+   const productListState = useSelector((state) => state.productList)
+   const { loading, error, products } = productListState
+
+   useEffect(() => {
+      dispatch(listProducts())
+   }, [])
+
+   useEffect(() => {
+      setProductList((_) => products.map((x) => ({ ...x, selected: false })))
+   }, [products])
+
+   const selectItem = (id) => {
+      setProductList((list) =>
+         list.map((item) => {
+            if (item._id === id) return { ...item, selected: !item.selected }
+            return item
+         })
+      )
+   }
+
+   const requestTransport = () => {
+      alert('Transport')
+   }
+
    const requestDelivery = () => {
-      alert('Delivery requested')
+      let selectedProducts = productList.filter((x) => x.selected)
+      if (selectedProducts.length === 0)
+         return alert('select at least one product to deliver')
+      history.push('/request-delivery', { products: selectedProducts })
    }
 
    const requestPickup = () => {
@@ -28,6 +61,9 @@ const DashboardScreen = ({ history, match }) => {
             <Button className='m-3' onClick={requestDelivery}>
                <i className='fas fa-truck'></i> Envío
             </Button>
+            <Button className='m-3' onClick={requestTransport}>
+               <i className='fas fa-truck'></i> Transporte
+            </Button>
          </Row>
 
          <Tabs
@@ -36,7 +72,14 @@ const DashboardScreen = ({ history, match }) => {
             onSelect={(k) => setKey(k)}
          >
             <Tab eventKey='product-list' title='Inventario'>
-               <ProductList history={history} match={match} />
+               <ProductList
+                  productList={productList}
+                  selectItem={selectItem}
+                  loading={loading}
+                  error={error}
+                  history={history}
+                  match={match}
+               />
             </Tab>
             <Tab eventKey='tracking' title='Rastreo'>
                <TrackingList history={history} match={match} />

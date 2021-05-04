@@ -83,11 +83,6 @@ const MyRouteScreen = ({ history }) => {
       // alert('Route to be deleted')
    }
 
-   const handleLocationSelected = (e, index) => {
-      //supposed to go to screen to add products to this user's account
-      alert('go to add item to user account')
-   }
-
    return (
       <Row>
          <Modal show={show} onHide={() => setShow(false)}>
@@ -142,6 +137,11 @@ const MyRouteScreen = ({ history }) => {
                            {markers?.map((x, i) => (
                               <tr
                                  key={i}
+                                 className={`${
+                                    x.status === 'Entregado'
+                                       ? 'table-success'
+                                       : ''
+                                 }`}
                                  onClick={(e) =>
                                     mouseEnterRow({
                                        index: i,

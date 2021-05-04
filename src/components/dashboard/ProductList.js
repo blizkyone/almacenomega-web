@@ -1,27 +1,9 @@
-import React, { useEffect } from 'react'
-import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button, Image } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
+import { Table, Button, Image, Form } from 'react-bootstrap'
 import Message from '../Message'
 import Loader from '../Loader'
-import { listProducts } from '../../actions/productActions'
 
-const ProductList = () => {
-   //  const pageNumber = match.params.pageNumber || 1
-
-   const dispatch = useDispatch()
-
-   const productList = useSelector((state) => state.productList)
-   const { loading, error, products, page, pages } = productList
-
-   useEffect(() => {
-      dispatch(listProducts())
-   }, [])
-
-   useEffect(() => {
-      console.log(products)
-   }, [products])
-
+const ProductList = ({ productList, selectItem, error, loading }) => {
    return (
       <>
          {loading ? (
@@ -48,8 +30,12 @@ const ProductList = () => {
                      </tr>
                   </thead>
                   <tbody>
-                     {products?.map((product) => (
-                        <tr key={product._id}>
+                     {productList?.map((product) => (
+                        <tr
+                           key={product._id}
+                           className={`${product.selected ? 'table-info' : ''}`}
+                           onClick={() => selectItem(product._id)}
+                        >
                            <td>{product.qty}</td>
                            <td>{product.name}</td>
                            <td>{product.brand}</td>
