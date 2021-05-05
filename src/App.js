@@ -18,6 +18,7 @@ import PickupItemPhotos from './screens/PickupItemPhotos'
 import BarcodeScreen from './screens/BarcodeScreen'
 import RouteReception from './screens/RouteReception'
 import RouteDetailReception from './screens/RouteDetailReception'
+import DeliveryReceptionScreen from './screens/DeliveryReceptionScreen'
 
 const App = () => {
    return (
@@ -54,6 +55,11 @@ const App = () => {
                <Route
                   path='/admin/mi-ruta/:order'
                   component={PickupOrderScreen}
+                  exact
+               />
+               <Route
+                  path='/admin/mi-ruta/:order/entregar-orden'
+                  component={DeliveryReceptionScreen}
                   exact
                />
                <Route

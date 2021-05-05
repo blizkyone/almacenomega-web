@@ -51,7 +51,8 @@ const ProductList = ({ productList, selectItem, error, loading }) => {
                               {
                                  <Image
                                     style={{ height: '100px', width: '100px' }}
-                                    src={`https://s3.us-east-1.amazonaws.com/aoitems/${product.images[0]}`}
+                                    // src={`https://s3.us-east-1.amazonaws.com/aoitems/${product.images[0]}`}
+                                    src={`https://aoitems.s3.us-east-1.amazonaws.com/${product.images[0]}`}
                                  />
                               }
                            </td>

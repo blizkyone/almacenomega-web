@@ -119,6 +119,7 @@ const MyRouteScreen = ({ history }) => {
                   <Table striped bordered hover responsive className='table-sm'>
                      <thead>
                         <tr>
+                           <th>TIPO</th>
                            <th>CONTACTO</th>
                            <th>TELEFONO</th>
                            <th>DIRECCION</th>
@@ -156,6 +157,7 @@ const MyRouteScreen = ({ history }) => {
                                  // }
                                  // onMouseLeave={() => mouseLeaveRow(i)}
                               >
+                                 <td>{x.type}</td>
                                  <td>{x.person}</td>
                                  <td>{x.phone}</td>
                                  <td>
@@ -171,16 +173,27 @@ const MyRouteScreen = ({ history }) => {
                                  <td>{x.status}</td>
                                  <td>
                                     <Button
-                                       onClick={(_) =>
-                                          history.push(
-                                             `/admin/mi-ruta/${x._id}`,
-                                             {
-                                                userId: x.user,
-                                             }
-                                          )
-                                       }
+                                       onClick={(_) => {
+                                          if (x.type === 'pickup') {
+                                             history.push(
+                                                `/admin/mi-ruta/${x._id}`,
+                                                {
+                                                   userId: x.user,
+                                                }
+                                             )
+                                          } else {
+                                             history.push(
+                                                `/admin/mi-ruta/${x._id}/entregar-orden`,
+                                                {
+                                                   orderItems: x.orderItems,
+                                                }
+                                             )
+                                          }
+                                       }}
                                     >
-                                       Orden
+                                       {x.type === 'pickup'
+                                          ? 'Recibir'
+                                          : 'Entregar'}
                                     </Button>
                                  </td>
                               </tr>

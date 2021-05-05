@@ -47,6 +47,9 @@ import {
    mediaUploadPhotoReducer,
    mediaGetItemPhotosReducer,
    mediaDeleteItemPhotoReducer,
+   mediaUploadOrderReceiptReducer,
+   mediaGetOrderReceiptReducer,
+   mediaDeleteOrderReceiptReducer,
 } from './reducers/mediaReducers'
 
 const reducer = combineReducers({
@@ -79,6 +82,9 @@ const reducer = combineReducers({
    mediaUploadPhoto: mediaUploadPhotoReducer,
    mediaGetItemPhotos: mediaGetItemPhotosReducer,
    mediaDeleteItemPhoto: mediaDeleteItemPhotoReducer,
+   mediaUploadOrderReceipt: mediaUploadOrderReceiptReducer,
+   mediaGetOrderReceipt: mediaGetOrderReceiptReducer,
+   mediaDeleteOrderReceipt: mediaDeleteOrderReceiptReducer,
    myRoute: getMyRouteReducer,
    createMyRoute: createMyRouteReducer,
    deleteMyRoute: routesDeleteMyRouteReducer,

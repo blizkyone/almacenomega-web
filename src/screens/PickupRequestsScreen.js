@@ -7,6 +7,7 @@ import {
    Card,
    Button,
    Alert,
+   Spinner,
 } from 'react-bootstrap'
 import Radium from 'radium'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -141,7 +142,13 @@ const PickupRequestScreen = ({ history, match }) => {
                   <h3 className='my-3'>Solicitudes</h3>
                </Col>
                <Col>
-                  <Button onClick={handleCreateRoute}>Crear Ruta</Button>
+                  <Button onClick={handleCreateRoute}>
+                     {createRouteLoading ? (
+                        <Spinner animation='border' size='sm' />
+                     ) : (
+                        'Crear Ruta'
+                     )}
+                  </Button>
                </Col>
             </Row>
             {loading ? (
@@ -154,6 +161,7 @@ const PickupRequestScreen = ({ history, match }) => {
                      <thead>
                         <tr>
                            <th>ADD</th>
+                           <th>TIPO</th>
                            <th>DIRECCION</th>
                            <th>FECHA DE SOLICITUD</th>
                            <th>MANEJO</th>
@@ -188,6 +196,7 @@ const PickupRequestScreen = ({ history, match }) => {
                                        ''
                                     )}
                                  </td>
+                                 <td>{x.type}</td>
                                  <td>{x.address}</td>
                                  <td>
                                     {moment

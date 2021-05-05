@@ -72,7 +72,7 @@ const PickupOrderScreen = ({ history, match }) => {
    useEffect(() => {
       // console.log(deliverSuccess)
       if (deliverSuccess) {
-         console.log('deliver success')
+         // console.log('deliver success')
          history.push(redirect)
          dispatch({ type: ORDER_DELIVER_RESET })
       }
@@ -171,7 +171,7 @@ const PickupOrderScreen = ({ history, match }) => {
                               product.item.images.length > 0 ? (
                                  <Image
                                     style={{ height: '100px', width: '100px' }}
-                                    src={`https://s3.us-east-1.amazonaws.com/aoitems/${product.item.images[0]}`}
+                                    src={`https://aoitems.s3.us-east-1.amazonaws.com/${product.item.images[0]}`}
                                     onClick={(_) =>
                                        history.push(
                                           `${match.url}/${product.item._id}/imagenes`
