@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
 import Message from '../Message'
 import Loader from '../Loader'
-import { getPickupTrackingList } from '../../actions/placesActions.js'
+import { getTrackingList } from '../../actions/placesActions.js'
 
 const TrackingList = ({ match, history }) => {
    const [envios, setEnvios] = useState([])
@@ -13,31 +13,31 @@ const TrackingList = ({ match, history }) => {
 
    const dispatch = useDispatch()
 
-   const pickupTrackingState = useSelector((state) => state.pickupTracking)
-   const {
-      loading,
-      error,
-      pickupTrackingList,
-      page,
-      pages,
-   } = pickupTrackingState
+   const orderTrackingState = useSelector((state) => state.orderTracking)
+   const { loading, error, orderTrackingList, page, pages } = orderTrackingState
 
    useEffect(() => {
-      dispatch(getPickupTrackingList(1))
+      dispatch(getTrackingList(1))
    }, [])
 
    useEffect(() => {
-      if (pickupTrackingList && pickupTrackingList.length > 0) {
-         setRecolecciones(
-            pickupTrackingList.filter((x) => x.status !== 'Entregado')
+      if (orderTrackingList && orderTrackingList.length > 0) {
+         // console.log(orderTrackingList)
+
+         const pickupList = orderTrackingList.filter((x) => x.type === 'pickup')
+         const deliveryList = orderTrackingList.filter(
+            (x) => x.type === 'delivery'
          )
+
+         setEnvios(deliveryList)
+         setRecolecciones(pickupList)
       } else {
          setRecolecciones([])
       }
-   }, [pickupTrackingList])
+   }, [orderTrackingList])
 
    const fetchNextPage = (nextPage) => {
-      if (nextPage != page) dispatch(getPickupTrackingList(nextPage))
+      if (nextPage != page) dispatch(getTrackingList(nextPage))
    }
 
    return (
@@ -54,7 +54,7 @@ const TrackingList = ({ match, history }) => {
                <Table striped bordered hover responsive className='table-sm'>
                   <thead>
                      <tr>
-                        <th>DESTINO</th>
+                        {/* <th>DESTINO</th> */}
                         <th>DIRECCION</th>
                         <th>FECHA DE SOLICITUD</th>
                         <th>STATUS</th>
@@ -69,7 +69,7 @@ const TrackingList = ({ match, history }) => {
                      <tbody>
                         {envios.map((x, i) => (
                            <tr key={i} onClick={(e) => alert('clicked')}>
-                              <td>{x.name}</td>
+                              {/* <td>{x.name}</td> */}
                               <td>{x.address}</td>
                               <td>
                                  {moment
@@ -108,7 +108,7 @@ const TrackingList = ({ match, history }) => {
                <Table striped bordered hover responsive className='table-sm'>
                   <thead>
                      <tr>
-                        <th>DESTINO</th>
+                        {/* <th>DESTINO</th> */}
                         <th>DIRECCION</th>
                         <th>FECHA DE SOLICITUD</th>
                         <th>STATUS</th>
@@ -123,7 +123,7 @@ const TrackingList = ({ match, history }) => {
                      <tbody>
                         {recolecciones.map((x, i) => (
                            <tr key={i} onClick={(e) => alert('clicked')}>
-                              <td>{x.name}</td>
+                              {/* <td>{x.name}</td> */}
                               <td>{x.address}</td>
                               <td>
                                  {moment

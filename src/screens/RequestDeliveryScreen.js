@@ -38,8 +38,6 @@ const RequestDeliveryScreen = ({ history }) => {
    const userLogin = useSelector((state) => state.userLogin)
    const { userInfo } = userLogin
 
-   const { products } = history.location.state
-
    const router = (stage) => {
       switch (stage) {
          case 0:
@@ -63,9 +61,9 @@ const RequestDeliveryScreen = ({ history }) => {
       }
    }
 
-   useEffect(() => {
-      console.log(products)
-   }, [history])
+   // useEffect(() => {
+   //    console.log(products)
+   // }, [history])
 
    useEffect(() => {
       if (!userInfo) {

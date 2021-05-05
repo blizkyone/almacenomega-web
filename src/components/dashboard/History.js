@@ -5,7 +5,10 @@ import { Table, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../Message'
 import Loader from '../Loader'
-import { getPickupTrackingList } from '../../actions/placesActions.js'
+import {
+   getPickupHistory,
+   getDeliveryHistory,
+} from '../../actions/placesActions.js'
 
 const TrackingList = ({ match, history }) => {
    const [envios, setEnvios] = useState([])
@@ -14,42 +17,36 @@ const TrackingList = ({ match, history }) => {
 
    const dispatch = useDispatch()
 
-   const pickupTrackingState = useSelector((state) => state.pickupTracking)
+   const pickupHistoryState = useSelector((state) => state.pickupHistory)
+   const { loading, error, pickupHistory, page, pages } = pickupHistoryState
+
+   const deliveryHistoryState = useSelector((state) => state.deliveryHistory)
    const {
-      loading,
-      error,
-      pickupTrackingList,
-      page,
-      pages,
-   } = pickupTrackingState
+      loading: deliveryLoading,
+      error: deliveryError,
+      deliveryHistory,
+      page: deliveryPage,
+      pages: deliveryPages,
+   } = deliveryHistoryState
 
    useEffect(() => {
-      dispatch(getPickupTrackingList(1))
+      dispatch(getDeliveryHistory())
+      dispatch(getPickupHistory())
    }, [])
 
    // useEffect(() => {
    //    console.log(recolecciones)
    // }, [recolecciones])
 
-   useEffect(() => {
-      if (pickupTrackingList && pickupTrackingList.length > 0) {
-         setRecolecciones(
-            pickupTrackingList.filter((x) => x.status === 'Entregado')
-         )
-      } else {
-         setRecolecciones([])
-      }
-   }, [pickupTrackingList])
-
    return (
       <Row>
          <Row className='align-items-center'>
             <h3 className='my-3'>Envíos</h3>
          </Row>
-         {loading ? (
+         {deliveryLoading ? (
             <Loader />
          ) : error ? (
-            <Message variant='danger'>{error}</Message>
+            <Message variant='danger'>{deliveryError}</Message>
          ) : (
             <>
                <Table striped bordered hover responsive className='table-sm'>
@@ -61,7 +58,7 @@ const TrackingList = ({ match, history }) => {
                      </tr>
                   </thead>
                   <tbody>
-                     {envios.map((x, i) => (
+                     {deliveryHistory.map((x, i) => (
                         <tr key={i} onClick={(e) => alert('clicked')}>
                            <td>{x.name}</td>
                            <td>{x.address}</td>
@@ -96,7 +93,7 @@ const TrackingList = ({ match, history }) => {
                      </tr>
                   </thead>
                   <tbody>
-                     {recolecciones.map((x, i) => (
+                     {pickupHistory.map((x, i) => (
                         <tr key={i} onClick={(e) => alert('clicked')}>
                            <td>{x.address}</td>
                            <td>

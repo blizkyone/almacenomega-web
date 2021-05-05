@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
    queryPlaces,
    getAddress,
-   requestPickup,
+   requestDelivery,
 } from '../../actions/placesActions.js'
 import {
    Card,
@@ -62,6 +62,8 @@ const EditLocation = ({ locationState, history }) => {
 
    const dispatch = useDispatch()
 
+   const { orderItems } = history.location.state
+
    const placesAutocomplete = useSelector((state) => state.placeAutocomplete)
    const {
       loading: placesLoading,
@@ -72,12 +74,12 @@ const EditLocation = ({ locationState, history }) => {
    const placeAddress = useSelector((state) => state.placeAddress)
    const { loading, error: placeAddressError, address } = placeAddress
 
-   const newPickupRequest = useSelector((state) => state.pickupRequest)
+   const newDeliveryRequest = useSelector((state) => state.deliveryRequest)
    const {
-      loading: newPickupRequestLoading,
-      error: newPickupRequestError,
+      loading: newDeliveryRequestLoading,
+      error: newDeliveryRequestError,
       request: newRequest,
-   } = newPickupRequest
+   } = newDeliveryRequest
 
    useEffect(() => {
       if (newRequest) setShow(true)
@@ -102,8 +104,8 @@ const EditLocation = ({ locationState, history }) => {
          }
       }
       if (placesError) setMainMessage(placesError)
-      if (newPickupRequestError) setMainMessage(newPickupRequestError)
-   }, [placeAddressError, placesError, newPickupRequestError])
+      if (newDeliveryRequestError) setMainMessage(newDeliveryRequestError)
+   }, [placeAddressError, placesError, newDeliveryRequestError])
 
    const handleSearch = (e) => {
       e.preventDefault()
@@ -122,13 +124,14 @@ const EditLocation = ({ locationState, history }) => {
       if (locationAddress && locationCoordinates && pickupRequirement) {
          //  alert('Request made')
          dispatch(
-            requestPickup({
+            requestDelivery({
                address: locationAddress,
                lat: locationCoordinates.lat,
                lng: locationCoordinates.lng,
                comments,
                handling: pickupRequirement,
                person,
+               orderItems,
             })
          )
       } else if (!locationCoordinates) {
@@ -158,7 +161,7 @@ const EditLocation = ({ locationState, history }) => {
    return (
       <Col>
          <Row className='my-4'>
-            <h3 className='mx-auto'>Solicitud de recolección</h3>
+            <h3 className='mx-auto'>Solicitud de entrega</h3>
          </Row>
          {mainMessage && (
             <Row>
@@ -253,7 +256,7 @@ const EditLocation = ({ locationState, history }) => {
 
                   {message && <Message variant='danger'>{message}</Message>}
                   <Button type='submit'>
-                     {newPickupRequestLoading ? (
+                     {newDeliveryRequestLoading ? (
                         <Spinner animation='border' variant='dark' size='sm' />
                      ) : (
                         'Hacer solicitud'

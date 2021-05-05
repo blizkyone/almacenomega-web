@@ -22,10 +22,12 @@ import {
 import {
    placeAutocompleteReducer,
    locationAddressReducer,
+   requestDeliveryReducer,
    requestPickupReducer,
    pickupHistoryReducer,
-   pickupTrackingReducer,
+   orderTrackingReducer,
    pickupRequestsReducer,
+   deliveryHistoryReducer,
 } from './reducers/placesReducers'
 import {
    getMyRouteReducer,
@@ -64,10 +66,12 @@ const reducer = combineReducers({
    userUpdate: userUpdateReducer,
    placeAutocomplete: placeAutocompleteReducer,
    placeAddress: locationAddressReducer,
+   deliveryRequest: requestDeliveryReducer,
+   deliveryHistory: deliveryHistoryReducer,
    pickupRequest: requestPickupReducer,
    pickupRequests: pickupRequestsReducer,
    pickupHistory: pickupHistoryReducer,
-   pickupTracking: pickupTrackingReducer,
+   orderTracking: orderTrackingReducer,
    orderDetails: orderDetailsReducer,
    orderAddItem: orderAddItemReducer,
    orderDeleteItem: orderDeleteItemReducer,
@@ -83,16 +87,16 @@ const reducer = combineReducers({
    routeFinish: routeFinishReducer,
 })
 
-const inventoryFromStorage = localStorage.getItem('inventory')
-   ? JSON.parse(localStorage.getItem('inventory'))
-   : []
+// const inventoryFromStorage = localStorage.getItem('inventory')
+//    ? JSON.parse(localStorage.getItem('inventory'))
+//    : []
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
    ? JSON.parse(localStorage.getItem('userInfo'))
    : null
 
 const initialState = {
-   productList: inventoryFromStorage,
+   // productList: inventoryFromStorage,
    userLogin: { userInfo: userInfoFromStorage },
    // placeCoordinates: { coordinates: { lat: 20.9670154, lng: -89.6242833 } },
 }

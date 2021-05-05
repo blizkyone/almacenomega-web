@@ -5,15 +5,21 @@ import {
    GET_ADDRESS_REQUEST,
    GET_ADDRESS_SUCCESS,
    GET_ADDRESS_FAIL,
+   REQUEST_DELIVERY_REQUEST,
+   REQUEST_DELIVERY_SUCCESS,
+   REQUEST_DELIVERY_FAIL,
    REQUEST_PICKUP_REQUEST,
    REQUEST_PICKUP_SUCCESS,
    REQUEST_PICKUP_FAIL,
+   DELIVERY_HISTORY_REQUEST,
+   DELIVERY_HISTORY_SUCCESS,
+   DELIVERY_HISTORY_FAIL,
    PICKUP_HISTORY_REQUEST,
    PICKUP_HISTORY_SUCCESS,
    PICKUP_HISTORY_FAIL,
-   PICKUP_TRACKING_REQUEST,
-   PICKUP_TRACKING_SUCCESS,
-   PICKUP_TRACKING_FAIL,
+   ORDER_TRACKING_REQUEST,
+   ORDER_TRACKING_SUCCESS,
+   ORDER_TRACKING_FAIL,
    SUBMITTED_PICKUP_REQUEST,
    SUBMITTED_PICKUP_SUCCESS,
    SUBMITTED_PICKUP_FAIL,
@@ -40,21 +46,42 @@ export const pickupRequestsReducer = (
    }
 }
 
-export const pickupTrackingReducer = (
-   state = { pickupTrackingList: [] },
+export const deliveryHistoryReducer = (
+   state = { deliveryHistory: [] },
    action
 ) => {
    switch (action.type) {
-      case PICKUP_TRACKING_REQUEST:
-         return { loading: true }
-      case PICKUP_TRACKING_SUCCESS:
+      case DELIVERY_HISTORY_REQUEST:
+         return { ...state, loading: true }
+      case DELIVERY_HISTORY_SUCCESS:
          return {
             loading: false,
-            pickupTrackingList: action.payload.pickupTrackingList,
+            deliveryHistory: action.payload.history,
             page: action.payload.page,
             pages: action.payload.pages,
          }
-      case PICKUP_TRACKING_FAIL:
+      case DELIVERY_HISTORY_FAIL:
+         return { ...state, loading: false, error: action.payload }
+      default:
+         return state
+   }
+}
+
+export const orderTrackingReducer = (
+   state = { orderTrackingList: [] },
+   action
+) => {
+   switch (action.type) {
+      case ORDER_TRACKING_REQUEST:
+         return { loading: true }
+      case ORDER_TRACKING_SUCCESS:
+         return {
+            loading: false,
+            orderTrackingList: action.payload.pickupTrackingList,
+            page: action.payload.page,
+            pages: action.payload.pages,
+         }
+      case ORDER_TRACKING_FAIL:
          return { loading: false, error: action.payload, pickupHistory: [] }
       default:
          return state
@@ -74,6 +101,19 @@ export const pickupHistoryReducer = (state = { pickupHistory: [] }, action) => {
          }
       case PICKUP_HISTORY_FAIL:
          return { ...state, loading: false, error: action.payload }
+      default:
+         return state
+   }
+}
+
+export const requestDeliveryReducer = (state = {}, action) => {
+   switch (action.type) {
+      case REQUEST_DELIVERY_REQUEST:
+         return { loading: true }
+      case REQUEST_DELIVERY_SUCCESS:
+         return { loading: false, request: action.payload }
+      case REQUEST_DELIVERY_FAIL:
+         return { loading: false, error: action.payload }
       default:
          return state
    }

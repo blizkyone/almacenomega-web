@@ -33,7 +33,13 @@ const ProductList = ({ productList, selectItem, error, loading }) => {
                      {productList?.map((product) => (
                         <tr
                            key={product._id}
-                           className={`${product.selected ? 'table-info' : ''}`}
+                           className={`${
+                              product.selected
+                                 ? 'table-info'
+                                 : product.inTransit
+                                 ? 'table-warning'
+                                 : ''
+                           }`}
                            onClick={() => selectItem(product._id)}
                         >
                            <td>{product.qty}</td>

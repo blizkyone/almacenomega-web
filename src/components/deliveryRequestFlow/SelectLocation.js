@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
-import { getPickupHistory } from '../../actions/placesActions'
+import { getDeliveryHistory } from '../../actions/placesActions'
 import { Table, Row, Button, Pagination } from 'react-bootstrap'
 import Loader from '../Loader'
 import Message from '../Message'
@@ -9,19 +9,19 @@ import Message from '../Message'
 const SelectLocation = ({ setStage, locationDispatch }) => {
    const dispatch = useDispatch()
 
-   const pickupHistoryState = useSelector((state) => state.pickupHistory)
-   const { loading, error, pickupHistory, page, pages } = pickupHistoryState
+   const deliveryHistoryState = useSelector((state) => state.deliveryHistory)
+   const { loading, error, deliveryHistory, page, pages } = deliveryHistoryState
 
    useEffect(() => {
-      dispatch(getPickupHistory())
+      dispatch(getDeliveryHistory())
    }, [])
 
    // useEffect(() => {
-   //    console.log(pickupHistory)
-   // }, [pickupHistory])
+   //    console.log(deliveryHistory)
+   // }, [deliveryHistory])
 
    const fetchNextPage = (nextPage) => {
-      if (nextPage != page) dispatch(getPickupHistory(nextPage))
+      if (nextPage != page) dispatch(getDeliveryHistory(nextPage))
    }
 
    const goToEditLocation = (e, x) => {
@@ -48,7 +48,7 @@ const SelectLocation = ({ setStage, locationDispatch }) => {
             <Button onClick={(_) => setStage(1)}>Nueva Ubicación</Button>
          </Row>
          <Row className='my-3'>
-            {pickupHistory?.length > 0 && <h5>Historial</h5>}
+            {deliveryHistory?.length > 0 && <h5>Historial</h5>}
          </Row>
          <Row>
             {loading ? (
@@ -58,7 +58,7 @@ const SelectLocation = ({ setStage, locationDispatch }) => {
             ) : (
                <Table className='table-hover'>
                   <tbody>
-                     {pickupHistory.map((x, i) => (
+                     {deliveryHistory.map((x, i) => (
                         <tr key={i} onClick={(e) => goToEditLocation(e, x)}>
                            <td>{x.name}</td>
                            <td>{x.address}</td>

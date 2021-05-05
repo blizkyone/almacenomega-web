@@ -15,19 +15,26 @@ const DashboardScreen = ({ history, match }) => {
 
    const productListState = useSelector((state) => state.productList)
    const { loading, error, products } = productListState
+   // console.log(products)
 
    useEffect(() => {
       dispatch(listProducts())
    }, [])
 
    useEffect(() => {
-      setProductList((_) => products.map((x) => ({ ...x, selected: false })))
+      const modProducts = products.map((x) => ({ ...x, selected: false }))
+      setProductList(modProducts)
    }, [products])
+
+   // useEffect(() => {
+   //    console.log(productList)
+   // }, [productList])
 
    const selectItem = (id) => {
       setProductList((list) =>
          list.map((item) => {
-            if (item._id === id) return { ...item, selected: !item.selected }
+            if (!item.inTransit && item._id === id)
+               return { ...item, selected: !item.selected }
             return item
          })
       )
@@ -41,7 +48,17 @@ const DashboardScreen = ({ history, match }) => {
       let selectedProducts = productList.filter((x) => x.selected)
       if (selectedProducts.length === 0)
          return alert('select at least one product to deliver')
-      history.push('/request-delivery', { products: selectedProducts })
+
+      const orderItems = selectedProducts.map((product) => ({
+         name: product.name,
+         brand: product.brand,
+         description: product.description,
+         price: product.price,
+         item: product._id,
+         barcode: product.barcode,
+         qty: product.qty,
+      }))
+      history.push('/request-delivery', { orderItems })
    }
 
    const requestPickup = () => {
