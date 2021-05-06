@@ -9,6 +9,9 @@ import {
    DELETE_MY_ROUTE_REQUEST,
    DELETE_MY_ROUTE_SUCCESS,
    DELETE_MY_ROUTE_FAIL,
+   REMOVE_ORDER_FROM_ROUTE_SUCCESS,
+   REMOVE_ORDER_FROM_ROUTE_REQUEST,
+   REMOVE_ORDER_FROM_ROUTE_FAIL,
    GET_ACTIVE_ROUTES_REQUEST,
    GET_ACTIVE_ROUTES_SUCCESS,
    GET_ACTIVE_ROUTES_FAIL,
@@ -21,6 +24,45 @@ import {
 } from '../constants/routesConstants'
 import axios from 'axios'
 import { logout } from './userActions'
+
+export const removeOrderFromRoute = (order) => async (dispatch, getState) => {
+   try {
+      dispatch({ type: REMOVE_ORDER_FROM_ROUTE_REQUEST })
+
+      const {
+         userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+         headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+         },
+      }
+
+      const body = { order }
+
+      await axios.post(
+         `${process.env.REACT_APP_API_URL}/routes/remove-order`,
+         body,
+         config
+      )
+
+      dispatch({
+         type: REMOVE_ORDER_FROM_ROUTE_SUCCESS,
+      })
+      dispatch({
+         type: GET_MY_ROUTE_RESET,
+      })
+   } catch (error) {
+      dispatch({
+         type: REMOVE_ORDER_FROM_ROUTE_FAIL,
+         payload:
+            error.response && error.response.data.message
+               ? error.response.data.message
+               : error.message,
+      })
+   }
+}
 
 export const finishRoute = (route) => async (dispatch, getState) => {
    try {
@@ -144,7 +186,7 @@ export const deleteMyRoute = () => async (dispatch, getState) => {
          },
       }
 
-      const { data } = await axios.delete(
+      await axios.delete(
          `${process.env.REACT_APP_API_URL}/routes/my-pickup-route`,
          config
       )

@@ -52,9 +52,12 @@ const RouteDetailReception = ({ match, history }) => {
    useEffect(() => {
       dispatch(getRouteItems(match.params.ruta))
       ref.current.focus()
-   }, [])
+   }, [dispatch, match.params.ruta])
 
    useEffect(() => {
+      if (routeItems.length === 0) {
+         setFinalize(true)
+      }
       setItems(routeItems)
    }, [routeItems])
 
@@ -74,7 +77,7 @@ const RouteDetailReception = ({ match, history }) => {
 
    useEffect(() => {
       if (routeFinishSuccess) history.push(redirect)
-   }, routeFinishSuccess)
+   }, [routeFinishSuccess, history, redirect])
 
    const handleChangeBarcode = (e) => {
       setBarcode(e.target.value)

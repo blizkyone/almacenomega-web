@@ -36,6 +36,7 @@ import {
    routesGetActiveReducer,
    routesGetRouteItemsReducer,
    routeFinishReducer,
+   routeRemoveOrderReducer,
 } from './reducers/routesReducers'
 import {
    orderDetailsReducer,
@@ -91,6 +92,7 @@ const reducer = combineReducers({
    routesGetActive: routesGetActiveReducer,
    routeGetRouteItems: routesGetRouteItemsReducer,
    routeFinish: routeFinishReducer,
+   routeRemoveOrder: routeRemoveOrderReducer,
 })
 
 // const inventoryFromStorage = localStorage.getItem('inventory')

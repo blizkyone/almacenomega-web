@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, Card, Button, Image } from 'react-bootstrap'
+import { Card, Button } from 'react-bootstrap'
 // import { Image, Placeholder } from 'cloudinary-react'
 
 const HomeScreen = () => {

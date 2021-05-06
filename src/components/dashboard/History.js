@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import moment from 'moment'
-import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button, Row, Col } from 'react-bootstrap'
+import { Table, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../Message'
 import Loader from '../Loader'
@@ -10,9 +9,7 @@ import {
    getDeliveryHistory,
 } from '../../actions/placesActions.js'
 
-const TrackingList = ({ match, history }) => {
-   const [envios, setEnvios] = useState([])
-   const [recolecciones, setRecolecciones] = useState([])
+const TrackingList = () => {
    //  const pageNumber = match.params.pageNumber || 1
 
    const dispatch = useDispatch()
@@ -32,7 +29,7 @@ const TrackingList = ({ match, history }) => {
    useEffect(() => {
       dispatch(getDeliveryHistory())
       dispatch(getPickupHistory())
-   }, [])
+   }, [dispatch])
 
    // useEffect(() => {
    //    console.log(recolecciones)

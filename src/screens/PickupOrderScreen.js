@@ -9,7 +9,6 @@ import {
 import Message from '../components/Message'
 import { ORDER_DELIVER_RESET } from '../constants/orderConstants'
 import Radium from 'radium'
-import Barcode from 'react-barcode'
 
 const styles = {
    back: {
@@ -48,7 +47,7 @@ const PickupOrderScreen = ({ history, match }) => {
 
    useEffect(() => {
       dispatch(getOrderDetails(orderId))
-   }, [orderId])
+   }, [orderId, dispatch])
 
    useEffect(() => {
       setShow(false)
@@ -76,7 +75,7 @@ const PickupOrderScreen = ({ history, match }) => {
          history.push(redirect)
          dispatch({ type: ORDER_DELIVER_RESET })
       }
-   }, [deliverSuccess])
+   }, [deliverSuccess, history, redirect, dispatch])
 
    const handleShowModal = (item) => {
       setItemToDelete(item)

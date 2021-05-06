@@ -52,6 +52,14 @@ const RegisterScreen = ({ location, history }) => {
       }
    }, [history, userInfo, redirect])
 
+   useEffect(() => {
+      if (usernameValidationError) {
+         setMessage(usernameValidationError)
+      } else {
+         setMessage('')
+      }
+   }, [usernameValidationError])
+
    const handleChangeUsername = (e) => {
       setUsername(e.target.value)
       setButtonActive(true)

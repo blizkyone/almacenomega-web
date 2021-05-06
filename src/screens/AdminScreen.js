@@ -12,7 +12,7 @@ const AdminScreen = ({ history, match }) => {
       if (!userInfo || !userInfo.isAdmin) {
          history.push('/login')
       }
-   }, [userInfo])
+   }, [userInfo, history])
 
    return (
       <>

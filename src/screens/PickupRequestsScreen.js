@@ -62,12 +62,12 @@ const PickupRequestScreen = ({ history, match }) => {
    useEffect(() => {
       // console.log('here')
       dispatch(getSubmittedPickupRequests(1))
-   }, [newRoute])
+   }, [newRoute, dispatch])
 
    useEffect(() => {
       // console.log(myRoute)
       if (myRoute.length > 0) setMessage('Ruta pendiente')
-   }, [myRoute, history])
+   }, [myRoute])
 
    // useEffect(() => {
    // if (createRouteError) setMessage(createRouteError)
@@ -146,7 +146,7 @@ const PickupRequestScreen = ({ history, match }) => {
                      {createRouteLoading ? (
                         <Spinner animation='border' size='sm' />
                      ) : (
-                        'Crear Ruta'
+                        'Agregar a Ruta'
                      )}
                   </Button>
                </Col>

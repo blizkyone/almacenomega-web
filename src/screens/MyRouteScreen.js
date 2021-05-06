@@ -11,10 +11,9 @@ import {
 } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import GoogleMapReact from 'google-map-react'
-import moment from 'moment'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getMyRoute, deleteMyRoute } from '../actions/routesActions.js'
+import { getMyRoute, removeOrderFromRoute } from '../actions/routesActions.js'
 import PlaceMapIcon from '../components/PlaceMapIcon'
 
 const MyRouteScreen = ({ history }) => {
@@ -25,18 +24,19 @@ const MyRouteScreen = ({ history }) => {
    })
    const [errorMessage, setErrorMessage] = useState('')
    const [show, setShow] = useState(false)
+   const [orderToRemove, setOrderToRemove] = useState()
 
    const dispatch = useDispatch()
 
    const myRouteState = useSelector((state) => state.myRoute)
    const { loading, error, myRoute } = myRouteState
 
-   const deleteMyRouteState = useSelector((state) => state.deleteMyRoute)
+   const routeRemoveOrderState = useSelector((state) => state.routeRemoveOrder)
    const {
-      loading: deleteMyRouteLoading,
-      error: deleteMyRouteError,
-      success: deleteMyRouteSuccess,
-   } = deleteMyRouteState
+      loading: removeLoading,
+      error: removeError,
+      success: removeSuccess,
+   } = routeRemoveOrderState
 
    // useEffect(() => {
    //    dispatch(getMyRoute())
@@ -44,13 +44,15 @@ const MyRouteScreen = ({ history }) => {
 
    useEffect(() => {
       dispatch(getMyRoute())
-   }, [deleteMyRouteSuccess])
+   }, [removeSuccess, dispatch])
 
    useEffect(() => {
-      if (deleteMyRouteError) setErrorMessage(deleteMyRouteError)
-   }, [deleteMyRouteError, error])
+      if (error) setErrorMessage(error)
+      if (removeError) setErrorMessage(removeError)
+   }, [error, removeError])
 
    useEffect(() => {
+      // console.log(myRoute)
       //Agregamos la cualidad de hover a los marcadores del mapa
       let newMarkers = myRoute.map((x) => ({
          ...x,
@@ -77,10 +79,14 @@ const MyRouteScreen = ({ history }) => {
       setMapCenter({ lat: coords[1], lng: coords[0] })
    }
 
-   const handleDeleteRoute = () => {
-      dispatch(deleteMyRoute())
+   const handleRemoveOrder = () => {
+      dispatch(removeOrderFromRoute(orderToRemove))
       setShow(false)
-      // alert('Route to be deleted')
+   }
+
+   const preHandleRemoveOrder = (order) => {
+      setOrderToRemove(order)
+      setShow(true)
    }
 
    return (
@@ -88,11 +94,11 @@ const MyRouteScreen = ({ history }) => {
          <Modal show={show} onHide={() => setShow(false)}>
             <Modal.Header closeButton>
                <Modal.Title>
-                  ¿Está seguro que desea borrar esta ruta?
+                  ¿Está seguro que desea borrar esta orden?
                </Modal.Title>
             </Modal.Header>
             <Modal.Footer>
-               <Button onClick={handleDeleteRoute}>Aceptar</Button>
+               <Button onClick={handleRemoveOrder}>Aceptar</Button>
                <Button onClick={(_) => setShow(false)}>Cancelar</Button>
             </Modal.Footer>
          </Modal>
@@ -102,13 +108,13 @@ const MyRouteScreen = ({ history }) => {
                <Col>
                   <h3 className='my-3'>Mi Ruta</h3>
                </Col>
-               <Col>
+               {/* <Col>
                   {deleteMyRouteLoading ? (
                      <Spinner animation='border' size='sm' />
                   ) : (
                      <Button onClick={(_) => setShow(true)}>Borrar Ruta</Button>
                   )}
-               </Col>
+               </Col> */}
             </Row>
             {loading ? (
                <Loader />
@@ -126,6 +132,7 @@ const MyRouteScreen = ({ history }) => {
                            <th>MANEJO</th>
                            <th>ESTADO</th>
                            <th>ACCION</th>
+                           <th>BORRAR</th>
                         </tr>
                      </thead>
 
@@ -162,12 +169,13 @@ const MyRouteScreen = ({ history }) => {
                                  <td>{x.phone}</td>
                                  <td>
                                     {x.address}
-                                    <a
+                                    {/* <a
                                        target='_blank'
+                                       rel='noreferrer'
                                        href={`https://www.google.com/maps/dir/?api=1&destination=${x.location.coordinates[1]},${x.location.coordinates[0]}`}
                                     >
                                        Google Maps
-                                    </a>
+                                    </a> */}
                                  </td>
                                  <td>{x.handling}</td>
                                  <td>{x.status}</td>
@@ -194,6 +202,24 @@ const MyRouteScreen = ({ history }) => {
                                        {x.type === 'pickup'
                                           ? 'Recibir'
                                           : 'Entregar'}
+                                    </Button>
+                                 </td>
+                                 <td>
+                                    <Button
+                                       className='btn-danger'
+                                       onClick={(_) =>
+                                          preHandleRemoveOrder(x._id)
+                                       }
+                                       disabled={x.status === 'Entregado'}
+                                    >
+                                       {removeLoading ? (
+                                          <Spinner
+                                             animation='border'
+                                             size='sm'
+                                          />
+                                       ) : (
+                                          <i className='fas fa-trash-alt'></i>
+                                       )}
                                     </Button>
                                  </td>
                               </tr>

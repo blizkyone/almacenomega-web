@@ -9,6 +9,9 @@ import {
    DELETE_MY_ROUTE_SUCCESS,
    DELETE_MY_ROUTE_REQUEST,
    DELETE_MY_ROUTE_FAIL,
+   REMOVE_ORDER_FROM_ROUTE_SUCCESS,
+   REMOVE_ORDER_FROM_ROUTE_REQUEST,
+   REMOVE_ORDER_FROM_ROUTE_FAIL,
    GET_ACTIVE_ROUTES_REQUEST,
    GET_ACTIVE_ROUTES_SUCCESS,
    GET_ACTIVE_ROUTES_FAIL,
@@ -22,6 +25,19 @@ import {
    ROUTE_FINISH_REQUEST,
    ROUTE_FINISH_RESET,
 } from '../constants/routesConstants'
+
+export const routeRemoveOrderReducer = (state = {}, action) => {
+   switch (action.type) {
+      case REMOVE_ORDER_FROM_ROUTE_REQUEST:
+         return { loading: true }
+      case REMOVE_ORDER_FROM_ROUTE_SUCCESS:
+         return { loading: false, success: true }
+      case REMOVE_ORDER_FROM_ROUTE_FAIL:
+         return { loading: false, error: action.payload }
+      default:
+         return state
+   }
+}
 
 export const routeFinishReducer = (state = {}, action) => {
    switch (action.type) {

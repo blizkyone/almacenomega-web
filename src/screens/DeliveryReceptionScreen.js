@@ -1,21 +1,7 @@
-import React, { useEffect, useState, useReducer, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-   Row,
-   Col,
-   Form,
-   Button,
-   Spinner,
-   Card,
-   Image,
-   Table,
-} from 'react-bootstrap'
-import Radium from 'radium'
-import {
-   deleteOrderReceipt,
-   getOrderReceipt,
-   uploadOrderReceipt,
-} from '../actions/mediaActions'
+import { Col, Form, Button, Spinner, Image, Table } from 'react-bootstrap'
+import { getOrderReceipt, uploadOrderReceipt } from '../actions/mediaActions'
 import { deliverOrder } from '../actions/orderActions'
 import Message from '../components/Message'
 import { GET_ORDER_RECEIPT_RESET } from '../constants/mediaConstants'
@@ -65,11 +51,11 @@ const DeliveryReceptionScreen = ({ history, match }) => {
 
    useEffect(() => {
       dispatch({ type: GET_ORDER_RECEIPT_RESET })
-   }, [])
+   }, [dispatch])
 
    useEffect(() => {
       dispatch(getOrderReceipt(match.params.order))
-   }, [photo, deleteReceiptPhoto])
+   }, [photo, deleteReceiptPhoto, dispatch, match.params.order])
 
    //    useEffect(() => {
    //       console.log(orderReceipt)
@@ -86,7 +72,7 @@ const DeliveryReceptionScreen = ({ history, match }) => {
          history.push(redirect)
          dispatch({ type: ORDER_DELIVER_RESET })
       }
-   }, [deliverSuccess])
+   }, [deliverSuccess, dispatch, history, redirect])
 
    const handleClick = () => {
       hiddenFileInput.current.click()

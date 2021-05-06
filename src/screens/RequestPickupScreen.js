@@ -65,7 +65,7 @@ const RequestPickupScreen = ({ history }) => {
       if (!userInfo) {
          history.push('/login')
       }
-   }, [userInfo])
+   }, [userInfo, history])
 
    return <>{router(stage)}</>
 }

@@ -6,7 +6,7 @@ import Message from '../Message'
 import Loader from '../Loader'
 import { getTrackingList } from '../../actions/placesActions.js'
 
-const TrackingList = ({ match, history }) => {
+const TrackingList = () => {
    const [envios, setEnvios] = useState([])
    const [recolecciones, setRecolecciones] = useState([])
    //  const pageNumber = match.params.pageNumber || 1
@@ -18,7 +18,7 @@ const TrackingList = ({ match, history }) => {
 
    useEffect(() => {
       dispatch(getTrackingList(1))
-   }, [])
+   }, [dispatch])
 
    useEffect(() => {
       if (orderTrackingList && orderTrackingList.length > 0) {
@@ -37,7 +37,7 @@ const TrackingList = ({ match, history }) => {
    }, [orderTrackingList])
 
    const fetchNextPage = (nextPage) => {
-      if (nextPage != page) dispatch(getTrackingList(nextPage))
+      if (nextPage !== page) dispatch(getTrackingList(nextPage))
    }
 
    return (
@@ -74,6 +74,7 @@ const TrackingList = ({ match, history }) => {
                               <td>
                                  {moment
                                     .utc(x.updatedAt)
+                                    .local()
                                     .format('MM/DD/YYYY HH:mm')}
                               </td>
                               <td>{x.status}</td>

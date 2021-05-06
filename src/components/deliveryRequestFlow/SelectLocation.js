@@ -14,14 +14,14 @@ const SelectLocation = ({ setStage, locationDispatch }) => {
 
    useEffect(() => {
       dispatch(getDeliveryHistory())
-   }, [])
+   }, [dispatch])
 
    // useEffect(() => {
    //    console.log(deliveryHistory)
    // }, [deliveryHistory])
 
    const fetchNextPage = (nextPage) => {
-      if (nextPage != page) dispatch(getDeliveryHistory(nextPage))
+      if (nextPage !== page) dispatch(getDeliveryHistory(nextPage))
    }
 
    const goToEditLocation = (e, x) => {

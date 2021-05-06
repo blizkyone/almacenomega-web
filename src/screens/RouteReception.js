@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
-import { Table, Row, Pagination, Col, Button, Alert } from 'react-bootstrap'
+import { Table, Alert } from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getActiveRoutes } from '../actions/routesActions'
@@ -20,7 +20,7 @@ const RouteReception = ({ history, match }) => {
 
    useEffect(() => {
       dispatch(getActiveRoutes())
-   }, [])
+   }, [dispatch])
 
    // useEffect(() => {
    //    console.log(activeRoutes)
@@ -40,6 +40,17 @@ const RouteReception = ({ history, match }) => {
       history.push(redirect, { name, date })
    }
 
+   const handleClickRow = (r) => {
+      // console.log(r)
+      if (r.completed) {
+         handleSelectRoute(
+            r._id,
+            r.createdBy.name,
+            moment.utc(r.createdAt).format('MM/DD/YYYY')
+         )
+      }
+   }
+
    return (
       <>
          <h3>Rutas Activas</h3>
@@ -55,6 +66,7 @@ const RouteReception = ({ history, match }) => {
                      <th>ENCARGADO</th>
                      <th>ORDENES</th>
                      <th>FECHA DE CREACION</th>
+                     <th>COMPLETADO</th>
                   </tr>
                </thead>
 
@@ -62,18 +74,20 @@ const RouteReception = ({ history, match }) => {
                   {activeRoutes.map((route) => (
                      <tr
                         key={route._id}
-                        onClick={(_) =>
-                           handleSelectRoute(
-                              route._id,
-                              route.createdBy.name,
-                              moment.utc(route.createdAt).format('MM/DD/YYYY')
-                           )
-                        }
+                        onClick={() => handleClickRow(route)}
+                        className={route.completed ? 'table-info' : ''}
                      >
                         <td>{route.createdBy.name}</td>
                         <td>{route.route.length}</td>
                         <td>
                            {moment.utc(route.createdAt).format('MM/DD/YYYY')}
+                        </td>
+                        <td>
+                           {route.completed ? (
+                              <i className='fas fa-check-circle'></i>
+                           ) : (
+                              <i className='fas fa-times-circle'></i>
+                           )}
                         </td>
                      </tr>
                   ))}

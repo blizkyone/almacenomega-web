@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Row, Col, Form, Button, Spinner, Card, Image } from 'react-bootstrap'
 import Radium from 'radium'
@@ -66,11 +66,11 @@ const PickupItemPhotos = ({ match, history }) => {
 
    useEffect(() => {
       dispatch({ type: GET_ITEM_PHOTOS_RESET })
-   }, [])
+   }, [dispatch])
 
    useEffect(() => {
       dispatch(getItemPictures(match.params.item))
-   }, [photo, deletePhoto])
+   }, [photo, deletePhoto, dispatch, match.params.item])
 
    useEffect(() => {
       // console.log(uploadedPhotos)

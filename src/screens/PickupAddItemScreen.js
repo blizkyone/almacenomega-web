@@ -65,7 +65,7 @@ const AddItemScreen = ({ history, match }) => {
          dispatch({ type: ORDER_ADD_ITEM_RESET })
          history.push(redirect)
       }
-   }, [success, history, match])
+   }, [success, history, match, redirect, dispatch])
 
    // const handleBarcodeSubmit = (e) => {
    //    e.preventDefault()
@@ -123,7 +123,7 @@ const AddItemScreen = ({ history, match }) => {
       if (!userInfo) {
          history.push('/login')
       }
-   }, [userInfo])
+   }, [userInfo, history])
 
    return (
       <FormContainer>

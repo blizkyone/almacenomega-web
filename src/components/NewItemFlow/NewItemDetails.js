@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Button, InputGroup } from 'react-bootstrap'
+import { Form, Button } from 'react-bootstrap'
 import Message from '../Message'
 
 const NewItemDetails = ({

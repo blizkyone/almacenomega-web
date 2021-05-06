@@ -19,7 +19,7 @@ const DashboardScreen = ({ history, match }) => {
 
    useEffect(() => {
       dispatch(listProducts())
-   }, [])
+   }, [dispatch])
 
    useEffect(() => {
       const modProducts = products.map((x) => ({ ...x, selected: false }))

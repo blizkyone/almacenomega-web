@@ -14,14 +14,14 @@ const SelectLocation = ({ setStage, locationDispatch }) => {
 
    useEffect(() => {
       dispatch(getPickupHistory())
-   }, [])
+   }, [dispatch])
 
    // useEffect(() => {
    //    console.log(pickupHistory)
    // }, [pickupHistory])
 
    const fetchNextPage = (nextPage) => {
-      if (nextPage != page) dispatch(getPickupHistory(nextPage))
+      if (nextPage !== page) dispatch(getPickupHistory(nextPage))
    }
 
    const goToEditLocation = (e, x) => {
