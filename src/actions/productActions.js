@@ -29,6 +29,8 @@ export const listProducts = (keyword = '', pageNumber = '') => async (
          userLogin: { userInfo },
       } = getState()
 
+      console.log(userInfo)
+
       const config = {
          headers: {
             Authorization: `Bearer ${userInfo.token}`,
@@ -45,13 +47,16 @@ export const listProducts = (keyword = '', pageNumber = '') => async (
          payload: data,
       })
    } catch (error) {
-      console.log(error)
+      const message =
+         error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+      if (message === 'Not authorized, token failed') {
+         dispatch(logout())
+      }
       dispatch({
          type: PRODUCT_LIST_FAIL,
-         payload:
-            error.response && error.response.data.message
-               ? error.response.data.message
-               : error.message,
+         payload: message,
       })
    }
 }
@@ -67,12 +72,16 @@ export const listProductDetails = (id) => async (dispatch) => {
          payload: data,
       })
    } catch (error) {
+      const message =
+         error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+      if (message === 'Not authorized, token failed') {
+         dispatch(logout())
+      }
       dispatch({
          type: PRODUCT_DETAILS_FAIL,
-         payload:
-            error.response && error.response.data.message
-               ? error.response.data.message
-               : error.message,
+         payload: message,
       })
    }
 }

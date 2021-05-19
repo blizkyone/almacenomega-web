@@ -31,7 +31,7 @@ export const pickupRequestsReducer = (
 ) => {
    switch (action.type) {
       case SUBMITTED_PICKUP_REQUEST:
-         return { loading: true }
+         return { ...state, loading: true }
       case SUBMITTED_PICKUP_SUCCESS:
          return {
             loading: false,

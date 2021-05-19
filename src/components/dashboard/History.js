@@ -57,7 +57,6 @@ const TrackingList = () => {
                   <tbody>
                      {deliveryHistory.map((x, i) => (
                         <tr key={i} onClick={(e) => alert('clicked')}>
-                           <td>{x.name}</td>
                            <td>{x.address}</td>
                            <td>
                               {moment

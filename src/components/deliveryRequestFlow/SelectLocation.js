@@ -6,7 +6,7 @@ import { Table, Row, Button, Pagination } from 'react-bootstrap'
 import Loader from '../Loader'
 import Message from '../Message'
 
-const SelectLocation = ({ setStage, locationDispatch }) => {
+const SelectLocation = ({ setStage, locationDispatch, locationState }) => {
    const dispatch = useDispatch()
 
    const deliveryHistoryState = useSelector((state) => state.deliveryHistory)
@@ -26,6 +26,7 @@ const SelectLocation = ({ setStage, locationDispatch }) => {
 
    const goToEditLocation = (e, x) => {
       e.preventDefault()
+      console.log(x)
       const coordinates = {
          lat: x.location.coordinates[1],
          lng: x.location.coordinates[0],
@@ -34,11 +35,12 @@ const SelectLocation = ({ setStage, locationDispatch }) => {
          type: 'SET_VALUES',
          payload: {
             ...x,
+            orderItems: locationState.orderItems,
             mapCenter: coordinates,
             locationCoordinates: coordinates,
          },
       })
-      setStage(1)
+      setStage(2)
    }
 
    return (

@@ -19,6 +19,8 @@ import BarcodeScreen from './screens/BarcodeScreen'
 import RouteReception from './screens/RouteReception'
 import RouteDetailReception from './screens/RouteDetailReception'
 import DeliveryReceptionScreen from './screens/DeliveryReceptionScreen'
+import NewPaymentMethodScreen from './screens/NewPaymentMethodScreen'
+import PaymentMethodsScreen from './screens/PaymentMethodsScreen'
 
 const App = () => {
    return (
@@ -29,6 +31,15 @@ const App = () => {
                <Route path='/barcode/:barcode' component={BarcodeScreen} />
                <Route path='/login' component={LoginScreen} />
                <Route path='/register' component={RegisterScreen} />
+               <Route
+                  path='/new-payment-method'
+                  component={NewPaymentMethodScreen}
+               />
+               <Route
+                  path='/payment-methods'
+                  component={PaymentMethodsScreen}
+               />
+
                <Route path='/dashboard' component={DashboardScreen} exact />
                <Route path='/dashboard/:page' component={DashboardScreen} />
                <Route path='/request-pickup' component={RequestPickupScreen} />
@@ -73,7 +84,7 @@ const App = () => {
                   exact
                />
                <Route
-                  path='/admin/solicitudes-recoleccion'
+                  path='/admin/solicitudes'
                   component={PickupRequestsScreen}
                   exact
                />

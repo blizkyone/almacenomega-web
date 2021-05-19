@@ -62,7 +62,7 @@ const EditLocation = ({ locationState, history }) => {
 
    const dispatch = useDispatch()
 
-   const { orderItems } = history.location.state
+   // const { orderItems } = history.location.state
 
    const placesAutocomplete = useSelector((state) => state.placeAutocomplete)
    const {
@@ -123,6 +123,7 @@ const EditLocation = ({ locationState, history }) => {
       e.currentTarget.checkValidity()
       if (locationAddress && locationCoordinates && pickupRequirement) {
          //  alert('Request made')
+         // console.log(locationState.orderItems)
          dispatch(
             requestDelivery({
                address: locationAddress,
@@ -131,7 +132,7 @@ const EditLocation = ({ locationState, history }) => {
                comments,
                handling: pickupRequirement,
                person,
-               orderItems,
+               orderItems: locationState.orderItems,
             })
          )
       } else if (!locationCoordinates) {

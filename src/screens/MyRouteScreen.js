@@ -17,11 +17,11 @@ import { getMyRoute, removeOrderFromRoute } from '../actions/routesActions.js'
 import PlaceMapIcon from '../components/PlaceMapIcon'
 
 const MyRouteScreen = ({ history }) => {
-   const [markers, setMarkers] = useState([])
    const [mapCenter, setMapCenter] = useState({
       lat: 20.9670154,
       lng: -89.6242833,
    })
+   const [markers, setMarkers] = useState([])
    const [errorMessage, setErrorMessage] = useState('')
    const [show, setShow] = useState(false)
    const [orderToRemove, setOrderToRemove] = useState()

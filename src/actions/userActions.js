@@ -202,7 +202,10 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
          },
       }
 
-      const { data } = await axios.get(`/api/users/${id}`, config)
+      const { data } = await axios.get(
+         `${process.env.REACT_APP_API_URL}/users/${id}`,
+         config
+      )
 
       dispatch({
          type: USER_DETAILS_SUCCESS,
@@ -240,7 +243,11 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
          },
       }
 
-      const { data } = await axios.put(`/api/users/profile`, user, config)
+      const { data } = await axios.put(
+         `${process.env.REACT_APP_API_URL}/users/profile`,
+         user,
+         config
+      )
 
       dispatch({
          type: USER_UPDATE_PROFILE_SUCCESS,
@@ -248,9 +255,12 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       })
       dispatch({
          type: USER_LOGIN_SUCCESS,
-         payload: data,
+         payload: { ...data, token: userInfo.token },
       })
-      localStorage.setItem('userInfo', JSON.stringify(data))
+      localStorage.setItem(
+         'userInfo',
+         JSON.stringify({ ...data, token: userInfo.token })
+      )
    } catch (error) {
       const message =
          error.response && error.response.data.message

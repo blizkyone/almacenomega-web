@@ -52,8 +52,18 @@ import {
    mediaGetOrderReceiptReducer,
    mediaDeleteOrderReceiptReducer,
 } from './reducers/mediaReducers'
+import {
+   stripeCreatePaymentIntentReducer,
+   stripeGetPaymentMethodsReducer,
+   stripeDeletePaymentMethodReducer,
+   stripeCreatePaymentMethodReducer,
+} from './reducers/stripeReducers'
 
 const reducer = combineReducers({
+   stripeCreatePaymentIntent: stripeCreatePaymentIntentReducer,
+   stripeGetPaymentMethods: stripeGetPaymentMethodsReducer,
+   dtripeCreatePaymentMethod: stripeCreatePaymentMethodReducer,
+   stripeDeletePaymentMethod: stripeDeletePaymentMethodReducer,
    productList: productListReducer,
    productDetails: productDetailsReducer,
    productDelete: productDeleteReducer,

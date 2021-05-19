@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Tabs, Tab, Row, Button } from 'react-bootstrap'
+import { Tabs, Tab, Row, Button, Col } from 'react-bootstrap'
 import ProductList from '../components/dashboard/ProductList.js'
 import TrackingList from '../components/dashboard/TrackingList.js'
 import History from '../components/dashboard/History.js'
 import { listProducts } from '../actions/productActions'
+import Loader from '../components/Loader'
 
 const DashboardScreen = ({ history, match }) => {
    const [key, setKey] = useState(match.params.page || 'product-list')
-
-   const [productList, setProductList] = useState([])
+   const [area, setArea] = useState(0)
 
    const dispatch = useDispatch()
 
@@ -22,43 +22,25 @@ const DashboardScreen = ({ history, match }) => {
    }, [dispatch])
 
    useEffect(() => {
-      const modProducts = products.map((x) => ({ ...x, selected: false }))
-      setProductList(modProducts)
+      if (products.length !== 0) {
+         let value = products
+            .map((x) => x.area)
+            .reduce((acc, current) => acc + current)
+            .toFixed(2)
+         setArea(value)
+      }
    }, [products])
 
    // useEffect(() => {
    //    console.log(productList)
    // }, [productList])
 
-   const selectItem = (id) => {
-      setProductList((list) =>
-         list.map((item) => {
-            if (!item.inTransit && item._id === id)
-               return { ...item, selected: !item.selected }
-            return item
-         })
-      )
-   }
-
    const requestTransport = () => {
       alert('Transport')
    }
 
    const requestDelivery = () => {
-      let selectedProducts = productList.filter((x) => x.selected)
-      if (selectedProducts.length === 0)
-         return alert('select at least one product to deliver')
-
-      const orderItems = selectedProducts.map((product) => ({
-         name: product.name,
-         brand: product.brand,
-         description: product.description,
-         price: product.price,
-         item: product._id,
-         barcode: product.barcode,
-         qty: product.qty,
-      }))
-      history.push('/request-delivery', { orderItems })
+      history.push('/request-delivery', { products })
    }
 
    const requestPickup = () => {
@@ -71,6 +53,21 @@ const DashboardScreen = ({ history, match }) => {
 
    return (
       <>
+         <Row>
+            <Col>
+               {loading ? (
+                  <Loader />
+               ) : (
+                  <>
+                     <h5>Almacenamineto utilizado:</h5>
+                     <h1>{`${area} m2`}</h1>
+                     <h5>{`Costo mensual: $${
+                        area < 1 ? 1000 : 1000 + (area - 1) * 350
+                     }`}</h5>
+                  </>
+               )}
+            </Col>
+         </Row>
          <Row>
             <Button className='m-3' onClick={requestPickup}>
                <i className='fas fa-truck'></i> Recolección
@@ -90,8 +87,7 @@ const DashboardScreen = ({ history, match }) => {
          >
             <Tab eventKey='product-list' title='Inventario'>
                <ProductList
-                  productList={productList}
-                  selectItem={selectItem}
+                  productList={products}
                   loading={loading}
                   error={error}
                   history={history}

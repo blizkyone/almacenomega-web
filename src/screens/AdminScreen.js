@@ -39,13 +39,13 @@ const AdminScreen = ({ history, match }) => {
             </LinkContainer>
          </Row>
          <Row className='m-3'>
-            <LinkContainer to={`${match.url}/solicitudes-recoleccion`}>
+            <LinkContainer to={`${match.url}/solicitudes`}>
                <Button
                   type='button'
                   className='btn btn-info btn-lg btn-block'
                   // onClick={() => history.push('/admin/myRoute')}
                >
-                  Solicitudes de Recolección
+                  Solicitudes
                </Button>
             </LinkContainer>
          </Row>

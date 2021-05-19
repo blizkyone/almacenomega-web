@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Button, Row, Image, Modal, Spinner } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import {
    getOrderDetails,
    deleteItemFromOrder,
    deliverOrder,
 } from '../actions/orderActions'
-import Message from '../components/Message'
 import { ORDER_DELIVER_RESET } from '../constants/orderConstants'
+
+import { Table, Button, Row, Image, Modal, Spinner } from 'react-bootstrap'
+import Message from '../components/Message'
 import Radium from 'radium'
 
 const styles = {
@@ -32,7 +33,11 @@ const PickupOrderScreen = ({ history, match }) => {
    const { loading, error, order } = orderDetailsState
 
    const orderDeleteItemState = useSelector((state) => state.orderDeleteItem)
-   const { loading: deleteLoading, error: deleteError } = orderDeleteItemState
+   const {
+      loading: deleteLoading,
+      error: deleteError,
+      deletedOrder,
+   } = orderDeleteItemState
 
    const orderDeliverState = useSelector((state) => state.orderDeliver)
    const {
@@ -47,7 +52,7 @@ const PickupOrderScreen = ({ history, match }) => {
 
    useEffect(() => {
       dispatch(getOrderDetails(orderId))
-   }, [orderId, dispatch])
+   }, [orderId, dispatch, deletedOrder])
 
    useEffect(() => {
       setShow(false)

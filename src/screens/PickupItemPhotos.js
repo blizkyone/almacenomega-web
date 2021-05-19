@@ -104,6 +104,7 @@ const PickupItemPhotos = ({ match, history }) => {
       // fd.append('upload_preset', 'react_upload')
       // fd.append('tags', match.params.item)
       // fd.append('folder', match.params.item)
+      console.log(selectedFile)
 
       dispatch(uploadPicture(selectedFile, match.params.item))
    }

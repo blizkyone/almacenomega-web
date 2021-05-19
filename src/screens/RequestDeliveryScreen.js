@@ -2,6 +2,7 @@ import React, { useEffect, useState, useReducer } from 'react'
 import { useSelector } from 'react-redux'
 import SelectLocation from '../components/deliveryRequestFlow/SelectLocation.js'
 import EditLocation from '../components/deliveryRequestFlow/EditLocation.js'
+import ItemSelection from '../components/deliveryRequestFlow/ItemSelection.js'
 
 const locationDefaultState = {
    mapCenter: {
@@ -15,6 +16,7 @@ const locationDefaultState = {
    comments: '',
    person: '',
    phone: '',
+   orderItems: [],
 }
 
 const locationReducer = (state, action) => {
@@ -23,6 +25,8 @@ const locationReducer = (state, action) => {
          return { ...action.payload }
       case 'RESET_VALUES':
          return locationDefaultState
+      case 'SET_ORDER_ITEMS':
+         return { ...state, orderItems: action.payload }
       default:
          return state
    }
@@ -35,6 +39,8 @@ const RequestDeliveryScreen = ({ history }) => {
       locationDefaultState
    )
 
+   const { products } = history.location.state
+
    const userLogin = useSelector((state) => state.userLogin)
    const { userInfo } = userLogin
 
@@ -42,12 +48,21 @@ const RequestDeliveryScreen = ({ history }) => {
       switch (stage) {
          case 0:
             return (
-               <SelectLocation
+               <ItemSelection
+                  products={products}
                   setStage={setStage}
                   locationDispatch={locationDispatch}
                />
             )
          case 1:
+            return (
+               <SelectLocation
+                  setStage={setStage}
+                  locationDispatch={locationDispatch}
+                  locationState={locationState}
+               />
+            )
+         case 2:
             return (
                <EditLocation
                   locationState={locationState}
