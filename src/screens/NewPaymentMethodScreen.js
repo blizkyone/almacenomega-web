@@ -22,16 +22,18 @@ const style = {
 }
 
 const PaymentMethodScreen = ({ history }) => {
+   const [cardError, setCardError] = useState()
+   const [loading, setLoading] = useState()
+
    const stripe = useStripe()
    const elements = useElements()
 
    const dispatch = useDispatch()
 
-   const { error, loading, intentData } = useSelector(
+   const { error, loading: intentLoading, intentData } = useSelector(
       (state) => state.stripeCreatePaymentIntent
    )
    const { userInfo } = useSelector((state) => state.userLogin)
-   // console.log(userInfo)
 
    useEffect(() => {
       dispatch(createPaymentIntent(1099))
@@ -41,6 +43,8 @@ const PaymentMethodScreen = ({ history }) => {
       e.preventDefault()
 
       if (!stripe || !elements) return
+      setCardError('')
+      setLoading(true)
 
       // Get a reference to a mounted CardElement. Elements knows how
       // to find your CardElement because there can only ever be one of
@@ -54,9 +58,11 @@ const PaymentMethodScreen = ({ history }) => {
       })
 
       if (error) {
-         console.log('[error]', error)
+         setLoading(false)
+         setCardError(error.message)
+         // console.log('[error]', error)
       } else {
-         console.log('[PaymentMethod]', paymentMethod)
+         // console.log('[PaymentMethod]', paymentMethod)
 
          const {
             error: confirmError,
@@ -68,8 +74,9 @@ const PaymentMethodScreen = ({ history }) => {
          })
 
          if (confirmError) {
-            console.log(confirmError)
-            console.log(confirmError.message)
+            setLoading(false)
+            setCardError(confirmError.message)
+            // console.log(confirmError)
             return
          }
          console.log(paymentIntent)
@@ -84,7 +91,7 @@ const PaymentMethodScreen = ({ history }) => {
       }
    }
 
-   return loading ? (
+   return intentLoading ? (
       <Spinner size='sm' animation='border' />
    ) : (
       <FormContainer>
@@ -94,7 +101,11 @@ const PaymentMethodScreen = ({ history }) => {
                {/* //4000 0027 6000 3184 */}
                <CardElement />
                <Button type='submit' disabled={!stripe} className='my-3'>
-                  Agregar tarjeta
+                  {loading ? (
+                     <Spinner animation='border' size='sm' />
+                  ) : (
+                     'Agregar tarjeta'
+                  )}
                </Button>
             </Form>
          )}

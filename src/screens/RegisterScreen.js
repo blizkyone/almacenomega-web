@@ -8,7 +8,7 @@ import RegisterPaymentMethodScreen from '../components/register/RegisterPaymentM
 const RegisterScreen = ({ history }) => {
    const [stage, setStage] = useState(0)
 
-   const { userInfo } = useSelector((state) => state.userRegister)
+   const { userInfo } = useSelector((state) => state.userLogin)
 
    useEffect(() => {
       if (userInfo?.paymentMethod) history.push('/')

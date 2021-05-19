@@ -5,9 +5,59 @@ import {
    GET_PAYMENT_METHODS_REQUEST,
    GET_PAYMENT_METHODS_SUCCESS,
    GET_PAYMENT_METHODS_FAIL,
+   CREATE_PAYMENT_METHOD_REQUEST,
+   CREATE_PAYMENT_METHOD_SUCCESS,
+   CREATE_PAYMENT_METHOD_FAIL,
 } from '../constants/stripeConstants'
 import axios from 'axios'
 import { logout } from './userActions'
+import { useStripe } from '@stripe/react-stripe-js'
+
+export const createNewPaymentMethod = (cardElement, clientSecret) => async (
+   dispatch,
+   getState
+) => {
+   try {
+      dispatch({
+         type: CREATE_PAYMENT_METHOD_REQUEST,
+      })
+
+      const stripe = useStripe()
+
+      const { paymentMethod } = await stripe.createPaymentMethod({
+         type: 'card',
+         card: cardElement,
+      })
+
+      const {
+         userLogin: { userInfo },
+      } = getState()
+
+      const { paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+         payment_method: paymentMethod.id,
+         receipt_email: userInfo.email,
+         setup_future_usage: 'off_session',
+      })
+
+      if (paymentIntent.status === 'succeeded')
+         dispatch({
+            type: CREATE_PAYMENT_METHOD_SUCCESS,
+            paymentMethod: paymentIntent.payment_method,
+         })
+   } catch (error) {
+      const message =
+         error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+      if (message === 'Not authorized, token failed') {
+         dispatch(logout())
+      }
+      dispatch({
+         type: CREATE_PAYMENT_METHOD_FAIL,
+         payload: message,
+      })
+   }
+}
 
 export const getPaymentMethods = () => async (dispatch, getState) => {
    //    console.log('here')

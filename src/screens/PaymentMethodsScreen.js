@@ -55,7 +55,7 @@ const PaymentMethodsScreen = ({ history }) => {
                   <th>EMISOR</th>
                   <th>CADUCIDAD</th>
                   <th>ULTIMOS 4 DIGITOS</th>
-                  <th>ACTION</th>
+                  <th>ESTADO</th>
                </tr>
             </thead>
             <tbody>
@@ -67,7 +67,7 @@ const PaymentMethodsScreen = ({ history }) => {
                      <td>
                         {userInfo.paymentMethod === method.id ? (
                            <p>
-                              <i class='fas fa-check-circle'></i>
+                              <i className='fas fa-check-circle'></i>
                               {' Selected'}
                            </p>
                         ) : (

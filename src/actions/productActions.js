@@ -29,7 +29,7 @@ export const listProducts = (keyword = '', pageNumber = '') => async (
          userLogin: { userInfo },
       } = getState()
 
-      console.log(userInfo)
+      // console.log(userInfo)
 
       const config = {
          headers: {

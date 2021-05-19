@@ -62,7 +62,7 @@ import {
 const reducer = combineReducers({
    stripeCreatePaymentIntent: stripeCreatePaymentIntentReducer,
    stripeGetPaymentMethods: stripeGetPaymentMethodsReducer,
-   dtripeCreatePaymentMethod: stripeCreatePaymentMethodReducer,
+   stripeCreatePaymentMethod: stripeCreatePaymentMethodReducer,
    stripeDeletePaymentMethod: stripeDeletePaymentMethodReducer,
    productList: productListReducer,
    productDetails: productDetailsReducer,

@@ -22,14 +22,11 @@ const PaymentIntentScreen = ({ setStage }) => {
          <h5>
             Para registrar tu método de pago debemos hacer un cobro único de
          </h5>
-         <h1>$ 10.99 MXN</h1>
+         <h1>$ 10.99 MXN pesos</h1>
          {error && <Message variant='danger'>{error}</Message>}
          <Row>
             <Button onClick={(_) => dispatch(createPaymentIntent(1099))}>
                {loading ? <Spinner size='sm' animation='border' /> : 'Aceptar'}
-            </Button>
-            <Button onClick={(_) => setStage(0)} variant='secondary'>
-               Atras
             </Button>
          </Row>
       </>

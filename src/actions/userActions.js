@@ -144,7 +144,7 @@ export const validateUsername = (username) => async (dispatch) => {
    }
 }
 
-export const register = (name, username, email, password) => async (
+export const register = ({ name, username, email, password }) => async (
    dispatch
 ) => {
    try {

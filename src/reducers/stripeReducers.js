@@ -31,7 +31,7 @@ export const stripeCreatePaymentMethodReducer = (state = {}, action) => {
       case CREATE_PAYMENT_METHOD_REQUEST:
          return { loading: true }
       case CREATE_PAYMENT_METHOD_SUCCESS:
-         return { loading: false, success: true }
+         return { loading: false, paymentMethod: action.payload }
       case CREATE_PAYMENT_METHOD_FAIL:
          return { loading: false, error: action.payload }
       default:

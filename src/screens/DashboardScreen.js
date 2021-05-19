@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Tabs, Tab, Row, Button, Col } from 'react-bootstrap'
+import { Tabs, Tab, Row, Button, Col, Alert } from 'react-bootstrap'
 import ProductList from '../components/dashboard/ProductList.js'
 import TrackingList from '../components/dashboard/TrackingList.js'
 import History from '../components/dashboard/History.js'
@@ -16,6 +16,7 @@ const DashboardScreen = ({ history, match }) => {
    const productListState = useSelector((state) => state.productList)
    const { loading, error, products } = productListState
    // console.log(products)
+   const { userInfo } = useSelector((state) => state.userLogin)
 
    useEffect(() => {
       dispatch(listProducts())
@@ -36,14 +37,17 @@ const DashboardScreen = ({ history, match }) => {
    // }, [productList])
 
    const requestTransport = () => {
+      if (!userInfo.paymentMethod) return alert('Registra un metodo de pago')
       alert('Transport')
    }
 
    const requestDelivery = () => {
+      if (!userInfo.paymentMethod) return alert('Registra un metodo de pago')
       history.push('/request-delivery', { products })
    }
 
    const requestPickup = () => {
+      if (!userInfo.paymentMethod) return alert('Registra un metodo de pago')
       history.push('/request-pickup')
    }
 
@@ -55,6 +59,14 @@ const DashboardScreen = ({ history, match }) => {
       <>
          <Row>
             <Col>
+               {!userInfo.paymentMethod && (
+                  <Alert
+                     variant='danger'
+                     onClick={(_) => history.push('/payment-methods')}
+                  >
+                     Por favor registra un metodo de pago <strong>aqui</strong>
+                  </Alert>
+               )}
                {loading ? (
                   <Loader />
                ) : (

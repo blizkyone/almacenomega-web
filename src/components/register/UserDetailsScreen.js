@@ -74,6 +74,7 @@ const UserDetailsScreen = ({ setStage }) => {
       } else if (buttonActive) {
          setMessage('Please validate username')
       } else {
+         // console.log({ name, username, email, password })
          dispatch(register({ name, username, email, password }))
       }
    }
