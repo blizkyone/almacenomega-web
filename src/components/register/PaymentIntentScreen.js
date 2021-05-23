@@ -25,7 +25,7 @@ const PaymentIntentScreen = ({ setStage }) => {
          <h1>$ 10.99 MXN pesos</h1>
          {error && <Message variant='danger'>{error}</Message>}
          <Row>
-            <Button onClick={(_) => dispatch(createPaymentIntent(1099))}>
+            <Button onClick={(_) => dispatch(createPaymentIntent())}>
                {loading ? <Spinner size='sm' animation='border' /> : 'Aceptar'}
             </Button>
          </Row>

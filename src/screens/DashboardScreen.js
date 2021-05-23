@@ -19,6 +19,7 @@ const DashboardScreen = ({ history, match }) => {
    const { userInfo } = useSelector((state) => state.userLogin)
 
    useEffect(() => {
+      console.log(userInfo)
       dispatch(listProducts())
    }, [dispatch])
 
@@ -37,17 +38,20 @@ const DashboardScreen = ({ history, match }) => {
    // }, [productList])
 
    const requestTransport = () => {
-      if (!userInfo.paymentMethod) return alert('Registra un metodo de pago')
+      if (!userInfo.paymentMethod || userInfo.paymentMethod === 'fallo')
+         return alert('Registra un metodo de pago')
       alert('Transport')
    }
 
    const requestDelivery = () => {
-      if (!userInfo.paymentMethod) return alert('Registra un metodo de pago')
+      if (!userInfo.paymentMethod || userInfo.paymentMethod === 'fallo')
+         return alert('Registra un metodo de pago')
       history.push('/request-delivery', { products })
    }
 
    const requestPickup = () => {
-      if (!userInfo.paymentMethod) return alert('Registra un metodo de pago')
+      if (!userInfo.paymentMethod || userInfo.paymentMethod === 'fallo')
+         return alert('Registra un metodo de pago')
       history.push('/request-pickup')
    }
 
@@ -59,7 +63,8 @@ const DashboardScreen = ({ history, match }) => {
       <>
          <Row>
             <Col>
-               {!userInfo.paymentMethod && (
+               {(!userInfo.paymentMethod ||
+                  userInfo.paymentMethod === 'fallo') && (
                   <Alert
                      variant='danger'
                      onClick={(_) => history.push('/payment-methods')}

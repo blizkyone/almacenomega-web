@@ -40,10 +40,17 @@ const RegisterPaymentMethodScreen = () => {
       const cardElement = elements.getElement(CardElement)
 
       // Use your card Element with other Stripe.js APIs
-      const { error, paymentMethod } = await stripe.createPaymentMethod({
-         type: 'card',
-         card: cardElement,
-      })
+      const { error, setupIntent } = await stripe.confirmCardSetup(
+         intentData.clientSecret,
+         {
+            payment_method: {
+               card: cardElement,
+               billing_details: {
+                  name: userInfo.name,
+               },
+            },
+         }
+      )
 
       if (error) {
          setLoading(false)
@@ -51,29 +58,12 @@ const RegisterPaymentMethodScreen = () => {
          // console.log('[error]', error)
       } else {
          // console.log('[PaymentMethod]', paymentMethod)
-         const {
-            error: confirmError,
-            paymentIntent,
-         } = await stripe.confirmCardPayment(intentData.clientSecret, {
-            payment_method: paymentMethod.id,
-            receipt_email: userInfo.email,
-            setup_future_usage: 'off_session',
-         })
-
-         if (confirmError) {
-            setLoading(false)
-            setCardError(confirmError.message)
-            return
-         }
-         // console.log(paymentIntent)
-         if (paymentIntent.status === 'succeeded') {
-            dispatch(
-               updateUserProfile({
-                  paymentMethod: paymentIntent.payment_method,
-               })
-            )
-            // paymentIntent.payment_method
-         }
+         // console.log(setupIntent)
+         dispatch(
+            updateUserProfile({
+               paymentMethod: setupIntent.payment_method,
+            })
+         )
       }
    }
 

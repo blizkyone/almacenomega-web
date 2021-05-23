@@ -6,12 +6,16 @@ import { updateUserProfile } from '../actions/userActions'
 import Message from '../components/Message'
 
 const PaymentMethodsScreen = ({ history }) => {
-   const [show, setShow] = useState()
+   // const [show, setShow] = useState()
    const [errMessage, setErrMessage] = useState('')
    const dispatch = useDispatch()
 
    const { loading, error, paymentMethods } = useSelector(
       (state) => state.stripeGetPaymentMethods
+   )
+
+   const { loading: deleteLoading, error: deleteError, success } = useSelector(
+      (state) => state.stripeDeletePaymentMethod
    )
 
    const { loading: updateLoading, error: updateError } = useSelector(
@@ -35,7 +39,7 @@ const PaymentMethodsScreen = ({ history }) => {
       <Message variant='danger'>{errMessage}</Message>
    ) : (
       <>
-         <Modal show={show} onHide={() => setShow(false)}>
+         {/* <Modal show={show} onHide={() => setShow(false)}>
             <Modal.Header closeButton>
                <Modal.Title>
                   Para agregar un nuevo método de pago se hará un cobro de $
@@ -48,7 +52,7 @@ const PaymentMethodsScreen = ({ history }) => {
                </Button>
                <Button onClick={(_) => setShow(false)}>Cancelar</Button>
             </Modal.Footer>
-         </Modal>
+         </Modal> */}
          <Table striped bordered hover responsive className='table-sm'>
             <thead>
                <tr>
@@ -92,7 +96,9 @@ const PaymentMethodsScreen = ({ history }) => {
                ))}
             </tbody>
          </Table>
-         <Button onClick={(_) => setShow(true)}>Nuevo Método de Pago</Button>
+         <Button onClick={(_) => history.push('/new-payment-method')}>
+            Nuevo Método de Pago
+         </Button>
       </>
    )
 }
