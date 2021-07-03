@@ -9,29 +9,17 @@ import Loader from '../components/Loader'
 
 const DashboardScreen = ({ history, match }) => {
    const [key, setKey] = useState(match.params.page || 'product-list')
-   const [area, setArea] = useState(0)
 
    const dispatch = useDispatch()
 
    const productListState = useSelector((state) => state.productList)
-   const { loading, error, products } = productListState
+   const { loading, error, products, area } = productListState
    // console.log(products)
    const { userInfo } = useSelector((state) => state.userLogin)
 
    useEffect(() => {
-      console.log(userInfo)
       dispatch(listProducts())
    }, [dispatch])
-
-   useEffect(() => {
-      if (products.length !== 0) {
-         let value = products
-            .map((x) => x.area)
-            .reduce((acc, current) => acc + current)
-            .toFixed(2)
-         setArea(value)
-      }
-   }, [products])
 
    // useEffect(() => {
    //    console.log(productList)
