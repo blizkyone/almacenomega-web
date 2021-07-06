@@ -13,7 +13,7 @@ const PaymentIntentScreen = ({ setStage }) => {
 
    useEffect(() => {
       if (intentData) {
-         setStage(2)
+         setStage(4)
       }
    }, [intentData])
 

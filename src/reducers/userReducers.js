@@ -31,7 +31,45 @@ import {
    USERNAME_VALIDATION_REQUEST,
    USERNAME_VALIDATION_SUCCESS,
    USERNAME_VALIDATION_FAIL,
+   USER_PHONE_CODE_REQUEST,
+   USER_PHONE_CODE_SUCCESS,
+   USER_PHONE_CODE_FAIL,
+   USER_PHONE_CODE_RESET,
+   USER_PHONE_CODE_VALIDATION_REQUEST,
+   USER_PHONE_CODE_VALIDATION_SUCCESS,
+   USER_PHONE_CODE_VALIDATION_FAIL,
+   USER_PHONE_CODE_VALIDATION_RESET,
 } from '../constants/userConstants'
+
+export const userValidatePhoneCodeReducer = (state = {}, action) => {
+   switch (action.type) {
+      case USER_PHONE_CODE_VALIDATION_REQUEST:
+         return { loading: true }
+      case USER_PHONE_CODE_VALIDATION_SUCCESS:
+         return { loading: false, status: action.payload }
+      case USER_PHONE_CODE_VALIDATION_FAIL:
+         return { loading: false, error: action.payload }
+      case USER_PHONE_CODE_VALIDATION_RESET:
+         return {}
+      default:
+         return state
+   }
+}
+
+export const userRequestPhoneCodeReducer = (state = {}, action) => {
+   switch (action.type) {
+      case USER_PHONE_CODE_REQUEST:
+         return { loading: true }
+      case USER_PHONE_CODE_SUCCESS:
+         return { loading: false, success: true }
+      case USER_PHONE_CODE_FAIL:
+         return { loading: false, error: action.payload }
+      case USER_PHONE_CODE_RESET:
+         return {}
+      default:
+         return state
+   }
+}
 
 export const userLoginReducer = (state = {}, action) => {
    switch (action.type) {

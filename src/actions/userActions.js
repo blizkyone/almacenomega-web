@@ -30,8 +30,76 @@ import {
    USERNAME_VALIDATION_REQUEST,
    USERNAME_VALIDATION_SUCCESS,
    USERNAME_VALIDATION_FAIL,
+   USER_PHONE_CODE_REQUEST,
+   USER_PHONE_CODE_SUCCESS,
+   USER_PHONE_CODE_FAIL,
+   USER_PHONE_CODE_VALIDATION_REQUEST,
+   USER_PHONE_CODE_VALIDATION_SUCCESS,
+   USER_PHONE_CODE_VALIDATION_FAIL,
 } from '../constants/userConstants'
 // import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
+
+export const verifyPhoneCode =
+   ({ phone, code }) =>
+   async (dispatch) => {
+      try {
+         dispatch({
+            type: USER_PHONE_CODE_VALIDATION_REQUEST,
+         })
+
+         const { data } = await axios.get(
+            `${process.env.REACT_APP_API_URL}/verification/phone-code-validation?phone=${phone}&code=${code}`
+         )
+
+         if (data === 'Create a new user') {
+            dispatch({
+               type: USER_PHONE_CODE_VALIDATION_SUCCESS,
+               payload: data,
+            })
+         } else {
+            dispatch({
+               type: USER_LOGIN_SUCCESS,
+               payload: data,
+            })
+
+            localStorage.setItem('userInfo', JSON.stringify(data))
+         }
+      } catch (error) {
+         dispatch({
+            type: USER_PHONE_CODE_VALIDATION_FAIL,
+            payload:
+               error.response && error.response.data.message
+                  ? error.response.data.message
+                  : error.message,
+         })
+      }
+   }
+
+export const requestPhoneCode = (phone) => async (dispatch) => {
+   try {
+      dispatch({
+         type: USER_PHONE_CODE_REQUEST,
+      })
+
+      const { data } = await axios.get(
+         `${process.env.REACT_APP_API_URL}/verification/phone-verification-code?phone=${phone}`
+      )
+      console.log(data)
+
+      dispatch({
+         type: USER_PHONE_CODE_SUCCESS,
+         payload: data,
+      })
+   } catch (error) {
+      dispatch({
+         type: USER_PHONE_CODE_FAIL,
+         payload:
+            error.response && error.response.data.message
+               ? error.response.data.message
+               : error.message,
+      })
+   }
+}
 
 export const login = (email, password) => async (dispatch) => {
    try {
@@ -144,47 +212,47 @@ export const validateUsername = (username) => async (dispatch) => {
    }
 }
 
-export const register = ({ name, username, email, password }) => async (
-   dispatch
-) => {
-   try {
-      dispatch({
-         type: USER_REGISTER_REQUEST,
-      })
+export const register =
+   ({ name, email, password, phone }) =>
+   async (dispatch) => {
+      try {
+         dispatch({
+            type: USER_REGISTER_REQUEST,
+         })
 
-      const config = {
-         headers: {
-            'Content-Type': 'application/json',
-         },
+         const config = {
+            headers: {
+               'Content-Type': 'application/json',
+            },
+         }
+
+         const { data } = await axios.post(
+            `${process.env.REACT_APP_API_URL}/users`,
+            { name, email, password, phone },
+            config
+         )
+
+         dispatch({
+            type: USER_REGISTER_SUCCESS,
+            payload: data,
+         })
+
+         dispatch({
+            type: USER_LOGIN_SUCCESS,
+            payload: data,
+         })
+
+         localStorage.setItem('userInfo', JSON.stringify(data))
+      } catch (error) {
+         dispatch({
+            type: USER_REGISTER_FAIL,
+            payload:
+               error.response && error.response.data.message
+                  ? error.response.data.message
+                  : error.message,
+         })
       }
-
-      const { data } = await axios.post(
-         `${process.env.REACT_APP_API_URL}/users`,
-         { name, username, email, password },
-         config
-      )
-
-      dispatch({
-         type: USER_REGISTER_SUCCESS,
-         payload: data,
-      })
-
-      dispatch({
-         type: USER_LOGIN_SUCCESS,
-         payload: data,
-      })
-
-      localStorage.setItem('userInfo', JSON.stringify(data))
-   } catch (error) {
-      dispatch({
-         type: USER_REGISTER_FAIL,
-         payload:
-            error.response && error.response.data.message
-               ? error.response.data.message
-               : error.message,
-      })
    }
-}
 
 export const getUserDetails = (id) => async (dispatch, getState) => {
    try {

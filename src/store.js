@@ -18,6 +18,8 @@ import {
    userDeleteReducer,
    userUpdateReducer,
    usernameValidationReducer,
+   userValidatePhoneCodeReducer,
+   userRequestPhoneCodeReducer,
 } from './reducers/userReducers'
 import {
    placeAutocompleteReducer,
@@ -78,6 +80,8 @@ const reducer = combineReducers({
    userList: userListReducer,
    userDelete: userDeleteReducer,
    userUpdate: userUpdateReducer,
+   userRequestPhoneCode: userRequestPhoneCodeReducer,
+   userValidatePhoneCode: userValidatePhoneCodeReducer,
    placeAutocomplete: placeAutocompleteReducer,
    placeAddress: locationAddressReducer,
    deliveryRequest: requestDeliveryReducer,
