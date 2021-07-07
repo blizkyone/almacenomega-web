@@ -14,7 +14,6 @@ const VerifyCodeScreen = ({ setStage, phone }) => {
    const [message, setMessage] = useState(null)
 
    const [resendCode, setResendCode] = useState()
-   const [activeBtn, setActiveBtn] = useState()
 
    const [counter, setCounter] = useState(30)
 

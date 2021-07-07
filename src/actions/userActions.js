@@ -101,7 +101,7 @@ export const requestPhoneCode = (phone) => async (dispatch) => {
    }
 }
 
-export const login = (email, password) => async (dispatch) => {
+export const login = (id, password) => async (dispatch) => {
    try {
       dispatch({
          type: USER_LOGIN_REQUEST,
@@ -115,7 +115,7 @@ export const login = (email, password) => async (dispatch) => {
 
       const { data } = await axios.post(
          `${process.env.REACT_APP_API_URL}/users/login`,
-         { email, password },
+         { id, password },
          config
       )
 
