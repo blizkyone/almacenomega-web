@@ -44,13 +44,9 @@ const EditLocation = ({ locationState, history }) => {
    const [query, setQuery] = useState('')
    const [mapCenter, setMapCenter] = useState(locationState.mapCenter)
    const [zoom, setZoom] = useState(12)
-   const [name, setName] = useState(locationState.name)
    const [locationAddress, setLocationAddress] = useState(locationState.address)
    const [locationCoordinates, setLocationCoordinates] = useState(
       locationState.locationCoordinates
-   )
-   const [pickupRequirement, setPickupRequirement] = useState(
-      locationState.handling
    )
    const [comments, setComments] = useState(locationState.comments)
    const [person, setPerson] = useState(locationState.person)
@@ -121,7 +117,7 @@ const EditLocation = ({ locationState, history }) => {
    const handleRequestPickup = (e) => {
       e.preventDefault()
       e.currentTarget.checkValidity()
-      if (locationAddress && locationCoordinates && pickupRequirement) {
+      if (locationAddress && locationCoordinates) {
          //  alert('Request made')
          // console.log(locationState.orderItems)
          dispatch(
@@ -130,7 +126,7 @@ const EditLocation = ({ locationState, history }) => {
                lat: locationCoordinates.lat,
                lng: locationCoordinates.lng,
                comments,
-               handling: pickupRequirement,
+               handling: locationState.handling,
                person,
                orderItems: locationState.orderItems,
             })
@@ -176,16 +172,6 @@ const EditLocation = ({ locationState, history }) => {
                   validated={validated}
                   onSubmit={handleRequestPickup}
                >
-                  <Form.Group controlId='name'>
-                     <Form.Label>Nombre</Form.Label>
-                     <Form.Control
-                        required
-                        type='name'
-                        placeholder='Casa, oficina, cliente A, etc'
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                     ></Form.Control>
-                  </Form.Group>
                   <Form.Group controlId='address'>
                      <Form.Label>Dirección</Form.Label>
                      <Form.Control
@@ -213,24 +199,6 @@ const EditLocation = ({ locationState, history }) => {
                               : ''
                         }
                      ></Form.Control>
-                  </Form.Group>
-                  <Form.Group controlId='coordinates'>
-                     <Form.Label>Manejo del producto</Form.Label>
-                     <Form.Control
-                        as='select'
-                        value={pickupRequirement}
-                        onChange={(e) => setPickupRequirement(e.target.value)}
-                        required
-                     >
-                        <option>Ligero</option>
-                        <option>Pesado</option>
-                     </Form.Control>
-                     <Form.Text>
-                        {'Ligero: 1 persona puede cargarlo y pesa < 20kg'}
-                     </Form.Text>
-                     <Form.Text>
-                        {'Pesado: Requiere 2 o más personas o pesa > 20kg'}
-                     </Form.Text>
                   </Form.Group>
                   <Form.Group controlId='address'>
                      <Form.Label>Comentarios</Form.Label>

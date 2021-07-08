@@ -26,7 +26,8 @@ const locationReducer = (state, action) => {
       case 'RESET_VALUES':
          return locationDefaultState
       case 'SET_ORDER_ITEMS':
-         return { ...state, orderItems: action.payload }
+         const { items, handling } = action.payload
+         return { ...state, orderItems: items, handling }
       default:
          return state
    }

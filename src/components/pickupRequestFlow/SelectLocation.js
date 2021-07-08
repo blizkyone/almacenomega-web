@@ -6,13 +6,14 @@ import { Table, Row, Button, Pagination } from 'react-bootstrap'
 import Loader from '../Loader'
 import Message from '../Message'
 
-const SelectLocation = ({ setStage, locationDispatch }) => {
+const SelectLocation = ({ setStage, locationDispatch, locationState }) => {
    const dispatch = useDispatch()
 
    const pickupHistoryState = useSelector((state) => state.pickupHistory)
    const { loading, error, pickupHistory, page, pages } = pickupHistoryState
 
    useEffect(() => {
+      // console.log(locationState)
       dispatch(getPickupHistory())
    }, [dispatch])
 
@@ -34,18 +35,19 @@ const SelectLocation = ({ setStage, locationDispatch }) => {
          type: 'SET_VALUES',
          payload: {
             ...x,
+            handling: locationState.handling,
             mapCenter: coordinates,
             locationCoordinates: coordinates,
          },
       })
-      setStage(1)
+      setStage(2)
    }
 
    return (
       <>
          <Row className='justify-content-between'>
             <h4 className='my-3'>Elige la ubicación</h4>
-            <Button onClick={(_) => setStage(1)}>Nueva Ubicación</Button>
+            <Button onClick={(_) => setStage(2)}>Nueva Ubicación</Button>
          </Row>
          <Row className='my-3'>
             {pickupHistory?.length > 0 && <h5>Historial</h5>}

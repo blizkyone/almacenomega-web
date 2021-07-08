@@ -2,6 +2,7 @@ import React, { useEffect, useState, useReducer } from 'react'
 import { useSelector } from 'react-redux'
 import SelectLocation from '../components/pickupRequestFlow/SelectLocation.js'
 import EditLocation from '../components/pickupRequestFlow/EditLocation.js'
+import Handling from '../components/pickupRequestFlow/Handling.js'
 
 const locationDefaultState = {
    mapCenter: {
@@ -21,6 +22,8 @@ const locationReducer = (state, action) => {
    switch (action.type) {
       case 'SET_VALUES':
          return { ...action.payload }
+      case 'SET_HANDLING':
+         return { ...state, handling: action.payload }
       case 'RESET_VALUES':
          return locationDefaultState
       default:
@@ -42,12 +45,20 @@ const RequestPickupScreen = ({ history }) => {
       switch (stage) {
          case 0:
             return (
-               <SelectLocation
+               <Handling
                   setStage={setStage}
                   locationDispatch={locationDispatch}
                />
             )
          case 1:
+            return (
+               <SelectLocation
+                  setStage={setStage}
+                  locationState={locationState}
+                  locationDispatch={locationDispatch}
+               />
+            )
+         case 2:
             return (
                <EditLocation
                   locationState={locationState}

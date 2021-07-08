@@ -48,9 +48,6 @@ const EditLocation = ({ locationState, history }) => {
    const [locationCoordinates, setLocationCoordinates] = useState(
       locationState.locationCoordinates
    )
-   const [pickupRequirement, setPickupRequirement] = useState(
-      locationState.handling
-   )
    const [comments, setComments] = useState(locationState.comments)
    const [person, setPerson] = useState(locationState.person)
 
@@ -118,7 +115,7 @@ const EditLocation = ({ locationState, history }) => {
    const handleRequestPickup = (e) => {
       e.preventDefault()
       e.currentTarget.checkValidity()
-      if (locationAddress && locationCoordinates && pickupRequirement) {
+      if (locationAddress && locationCoordinates) {
          //  alert('Request made')
          dispatch(
             requestPickup({
@@ -126,7 +123,7 @@ const EditLocation = ({ locationState, history }) => {
                lat: locationCoordinates.lat,
                lng: locationCoordinates.lng,
                comments,
-               handling: pickupRequirement,
+               handling: locationState.handling,
                person,
             })
          )
@@ -198,24 +195,6 @@ const EditLocation = ({ locationState, history }) => {
                               : ''
                         }
                      ></Form.Control>
-                  </Form.Group>
-                  <Form.Group controlId='manejo'>
-                     <Form.Label>Manejo del producto</Form.Label>
-                     <Form.Control
-                        as='select'
-                        value={pickupRequirement}
-                        onChange={(e) => setPickupRequirement(e.target.value)}
-                        required
-                     >
-                        <option>Ligero</option>
-                        <option>Pesado</option>
-                     </Form.Control>
-                     <Form.Text>
-                        {'Ligero: 1 persona puede cargarlo y pesa < 20kg'}
-                     </Form.Text>
-                     <Form.Text>
-                        {'Pesado: Requiere 2 o más personas o pesa > 20kg'}
-                     </Form.Text>
                   </Form.Group>
                   <Form.Group controlId='address'>
                      <Form.Label>Comentarios</Form.Label>

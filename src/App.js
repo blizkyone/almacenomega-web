@@ -88,7 +88,7 @@ const App = () => {
                   component={PickupRequestsScreen}
                   exact
                />
-               <Route path='/' component={HomeScreen} exact />
+               <Route path='/' component={DashboardScreen} exact />
             </Container>
          </main>
          <Footer />

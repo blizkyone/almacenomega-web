@@ -26,20 +26,20 @@ const DashboardScreen = ({ history, match }) => {
    // }, [productList])
 
    const requestTransport = () => {
-      if (!userInfo.paymentMethod || userInfo.paymentMethod === 'fallo')
-         return alert('Registra un metodo de pago')
+      // if (!userInfo.paymentMethod || userInfo.paymentMethod === 'fallo')
+      //    return alert('Registra un metodo de pago')
       alert('Transport')
    }
 
    const requestDelivery = () => {
-      if (!userInfo.paymentMethod || userInfo.paymentMethod === 'fallo')
-         return alert('Registra un metodo de pago')
+      // if (!userInfo.paymentMethod || userInfo.paymentMethod === 'fallo')
+      //    return alert('Registra un metodo de pago')
       history.push('/request-delivery', { products })
    }
 
    const requestPickup = () => {
-      if (!userInfo.paymentMethod || userInfo.paymentMethod === 'fallo')
-         return alert('Registra un metodo de pago')
+      // if (!userInfo.paymentMethod || userInfo.paymentMethod === 'fallo')
+      //    return alert('Registra un metodo de pago')
       history.push('/request-pickup')
    }
 

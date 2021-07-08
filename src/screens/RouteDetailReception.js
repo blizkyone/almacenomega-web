@@ -97,13 +97,17 @@ const RouteDetailReception = ({ match, history }) => {
          setItems(newItems)
          setMessage('')
       } else {
-         setMessage('No item found with that barcode')
+         setMessage('No item con ese codigo')
       }
       setBarcode('')
    }
 
    const handleFinalize = () => {
-      dispatch(finishRoute(match.params.ruta))
+      if (items.length === 0 || items.every((item) => item.received)) {
+         dispatch(finishRoute(match.params.ruta))
+      } else {
+         setMessage('Escanea los codigos de todos los items')
+      }
    }
 
    return (

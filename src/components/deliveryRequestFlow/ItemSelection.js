@@ -29,6 +29,20 @@ const ItemSelection = ({ products, setStage, locationDispatch }) => {
       let items = productList.filter(
          (x) => typeof x.selQty === 'number' && x.selQty > 0
       )
+      //----calculate handling
+      let handling = 'Ligero'
+      if (
+         items.some(
+            (item) =>
+               item.weight >= 20 ||
+               item.length >= 100 ||
+               item.height >= 100 ||
+               item.width >= 100
+         )
+      )
+         handling = 'Pesado'
+      if (items.some((item) => item.weight >= 50)) handling = 'Especial'
+      //calculate handling----
       items = items.map((product) => ({
          name: product.name,
          qty: product.selQty,
@@ -39,7 +53,10 @@ const ItemSelection = ({ products, setStage, locationDispatch }) => {
          barcode: Math.floor(1000 + Math.random() * 8999).toString(),
       }))
       //   console.log(items)
-      locationDispatch({ type: 'SET_ORDER_ITEMS', payload: items })
+      locationDispatch({
+         type: 'SET_ORDER_ITEMS',
+         payload: { items, handling },
+      })
       setStage(1)
    }
 

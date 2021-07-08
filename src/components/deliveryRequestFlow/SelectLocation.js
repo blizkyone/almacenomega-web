@@ -13,6 +13,7 @@ const SelectLocation = ({ setStage, locationDispatch, locationState }) => {
    const { loading, error, deliveryHistory, page, pages } = deliveryHistoryState
 
    useEffect(() => {
+      // console.log(locationState)
       dispatch(getDeliveryHistory())
    }, [dispatch])
 
@@ -35,6 +36,7 @@ const SelectLocation = ({ setStage, locationDispatch, locationState }) => {
          type: 'SET_VALUES',
          payload: {
             ...x,
+            handling: locationState.handling,
             orderItems: locationState.orderItems,
             mapCenter: coordinates,
             locationCoordinates: coordinates,
